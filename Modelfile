@@ -1,0 +1,9 @@
+load .env
+
+FROM mistral
+
+# set the temperature
+PARAMETER temperature 0.5
+
+# set the system prompt
+SYSTEM $PROMPT_PERSONA

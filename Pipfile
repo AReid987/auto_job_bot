@@ -4,10 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-selenium = "*"
 pandas = "*"
 scikit-learn = "*"
 numpy = "*"
+python-dotenv = "*"
+coloredlogs = "*"
+seleniumbase = "*"
+pytest = "*"
+transformers = "*"
+command-runner = "*"
 
 [dev-packages]
 
