@@ -1,33 +1,47 @@
-# To run the app
+# Auto Job Bot
 
-Requirements:
+## Quickstart
 
-ollama
-Download ollama: [https://ollama.ai/download](https://ollama.ai/download)
+### Requirements
 
-After downloading ollama, you can execute AI agents via the command line on your local machine by running "ollama run model_name"
+#### ollama
 
-For example: "ollama run llama2:13b"
+- Download ollama: [https://ollama.ai/download](https://ollama.ai/download)
 
-.env
-Create a .env file. Add the following variables
-PROMPT_PERSONA=""
-The PROMPT_PERSONA is used by the Modelfile to instruct the AI agent on how to respond and who to respond as. Write a prompt persona that describes who you are, providing key details. You should also include the explicit instructions to only answer as "NAME"
+- After downloading ollama, you can execute AI agents via the command line on your local machine by running _ollama run model_name_
 
-LINKEDIN_USERNAME=
-The email address for the LinkedIn account you wish to use
+- _Examples_:
+  - `ollama run llama2:13b`
+  - `ollama run mistral`
 
-LINKEDIN_PASSWORD=
-The password for the LinkedIn username you wish to use
+#### .env
 
-Feel free to experiment with different AI models: [https://ollama.ai/library](https://ollama.ai/library)
+- Create a _.env_ file with the following variables:
 
-After completing the .env file create the model by running in the terminal:
+  - `PROMPT_PERSONA=""`
 
-ollama create "NAME" -f ./Modelfile
+    - The _PROMPT_PERSONA_ is used by the _Modelfile_ to instruct the AI agent on how to respond and who to respond as.
+    - Write a prompt persona that describes who you are, providing relevant details about yourself.
+    - You should also include the explicit instructions to _only answer as "YOUR NAME"_
 
-Install the requirements:
-pipenv install -r requirements.txt
-pipenv shell
+  - `LINKEDIN_USERNAME=`
 
-execute the script with "python main.py"
+    - The email address for the LinkedIn account you wish to use
+
+  - `LINKEDIN_PASSWORD=`
+    - The password for the LinkedIn account you wish to use
+
+- _Note_: Feel free to experiment with different AI models: [https://ollama.ai/library](https://ollama.ai/library)
+
+- After completing the _.env_ file, create the model by running in the terminal:
+
+  - `ollama create "MODEL NAME" -f ./Modelfile`
+
+#### Install the requirements
+
+- `pipenv install -r requirements.txt`
+- `pipenv shell`
+
+#### Execute the main script
+
+- `python main.py`
