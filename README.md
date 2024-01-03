@@ -18,11 +18,13 @@
 
 - Create a _.env_ file with the following variables:
 
-  - `PROMPT_PERSONA=""`
+  - `FIRST_NAME=""`
 
-    - The _PROMPT_PERSONA_ is used by the _Modelfile_ to instruct the AI agent on how to respond and who to respond as.
-    - Write a prompt persona that describes who you are, providing relevant details about yourself.
-    - You should also include the explicit instructions to _only answer as "YOUR NAME"_
+  - `LAST_NAME=""`
+
+  - `DOB=""`
+
+    - Use the format: MM/DD/YYYY
 
   - `LINKEDIN_USERNAME=`
 

@@ -22,6 +22,7 @@ class LinkedinBot(BaseCase):
         logger.info("\n Logging in... ")
         # type username
         logger.info("\n Typing username ")
+        logger.debug(f"\n {os.getenv('LINKEDIN_USERNAME')}")
         self.type('input#username', os.getenv('LINKEDIN_USERNAME'))
         # type password
         logger.info("\n Typing password ")
@@ -249,8 +250,8 @@ class LinkedinBot(BaseCase):
         logger.debug("\n Test: login... ")
         try:
             self.login()
-        except Exception:
-            logger.error("\n Failed to login. Exiting... ")
+        except Exception as e:
+            logger.error(f"\n Failed to login. Exiting... {e}")
 
     # Check for security check
     @pytest.mark.run(order=3)
