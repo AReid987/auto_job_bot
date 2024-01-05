@@ -13,6 +13,7 @@ seleniumbase = "*"
 pytest = "*"
 transformers = "*"
 command-runner = "*"
+ipdb = "*"
 
 [dev-packages]
 

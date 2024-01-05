@@ -6,6 +6,7 @@ BaseCase.main(__name__, __file__, "-s", "--uc", "--demo", "--reuse-session", "--
 from logger import Logger
 import pytest
 import os
+import ipdb
 
 # Instantiate logger
 logger = Logger('sb_linkedin_bot', 'sb_linkedin_bot.log').get_logger()
@@ -22,7 +23,6 @@ class LinkedinBot(BaseCase):
         logger.info("\n Logging in... ")
         # type username
         logger.info("\n Typing username ")
-        logger.debug(f"\n {os.getenv('LINKEDIN_USERNAME')}")
         self.type('input#username', os.getenv('LINKEDIN_USERNAME'))
         # type password
         logger.info("\n Typing password ")
@@ -35,16 +35,17 @@ class LinkedinBot(BaseCase):
     # Check for security check
     def check_security(self):
         logger.info("\n Checking for security check... ")
+        pass
         # check for iframe
-        if self.is_element_visible('iframe'):
-            logger.info("\n Found iframe. ")
-            self.switch_to_frame('iframe[title="Captcha Challenge"]')
-            # look for verify button
-            logger.info("\n Found security check. ")
-            self.click('button:contains("Verify")', timeout=6.25)
-            logger.info("\n Clicked security check button.")
-        else:
-            logger.info("\n No security check found. ")
+        # if self.is_element_visible('iframe'):
+        #     logger.info("\n Found iframe. ")
+        #     self.switch_to_frame('iframe[title="Captcha Challenge"]')
+        #     # look for verify button
+        #     logger.info("\n Found security check. ")
+        #     self.click('button:contains("Verify")', timeout=6.25)
+        #     logger.info("\n Clicked security check button.")
+        # else:
+        #     logger.info("\n No security check found. ")
 
 
     # Search for job by title
@@ -117,12 +118,11 @@ class LinkedinBot(BaseCase):
         # Check for regular form label / input pairs
         # Execute current logic if found
         # Check for resume upload page
-        #ember792 > div > div:nth-child(2) > form > div > div > div > div.mt2 > div
+        # ember792 > div > div:nth-child(2) > form > div > div > div > div.mt2 > div
         # Write resume upload logic
         # Alternate checking on each page until "Review button is found"
         # Click "Review" button
         # Click "submit button"
-
 
         # Find all labels within the form
         logger.info("\n Finding all labels within the easy apply form... ")
@@ -150,6 +150,118 @@ class LinkedinBot(BaseCase):
         logger.info(f"\n Extracted questions dictionary: {questions_dictionary}")
         return questions_dictionary
 
+    # # Check each type of form field for empty / filled
+    # def are_form_fields_filled(self):
+    #     logger.info("\n Checking if form fields are filled...")
+    #     # Check text inputs and text areas
+    #     text_fields = self.find_elements('form div.ph5 input[type="text"], form  div.ph5 input[type="email], form  div.ph5 textarea')
+    #     for field in text_fields:
+    #         field_value = field.get_attribute('value').strip()
+    #         if not field_value:
+    #             logger.info("\n Found an empty text field.")
+    #             return False
+
+    #     # Check checkboxes
+    #     checkboxes = self.find_elements('form div.ph5 input[type="checkbox"]')
+    #     for checkbox in checkboxes:
+    #         # Check for 'Mark Job as Top Job Choice Job' checkbox
+    #         # TODO : Break 'Top Choice Job Logic Into Separate Function
+    #         if checkbox.accessible_name == 'Mark job as a top choice job':
+    #             logger.info("\n Found a 'Mark Job as Top Job Choice Job' checkbox.")
+    #         elif not checkbox.accessible_name == 'Mark job as a top choice job':
+    #             if not checkbox.is_selected():
+    #                 logger.info("\n Found an unchecked checkbox.")
+    #                 return False
+
+    #     # Check radio buttons
+    #     radio_buttons = self.get_radio_button_groups()
+    #     for group in radio_buttons.values():
+    #         if not any(btn.is_selected() for btn in group):
+    #             logger.info("\n Found an unselected radio button group.")
+    #             return False
+
+    #     # Check dropdowns (select elements)
+    #     dropdowns = self.find_elements('form div.ph5 select')
+    #     for dropdown in dropdowns:
+    #         # Find first <option> in the <select>
+    #         default_option = dropdown.find_element('tag name', 'option')
+    #         # Check if first option is selected
+    #         if default_option.is_selected():
+    #             logger.info("\n Found a dropdown with no selection.")
+    #             return False
+
+    #     logger.info("\n All fields are filled.")
+    #     return True
+
+    # def get_radio_button_groups(self):
+    #     # Group radio buttons by their 'name' attribute
+    #     radio_buttons = self.find_elements('form div.ph5 input[type="radio]')
+    #     groups = {}
+    #     for btn in radio_buttons:
+    #         name = btn.get_attribute('name')
+    #         if name:
+    #             if name not in groups:
+    #                 groups[name] = []
+    #             groups[name].append(btn)
+    #     return groups
+
+    # Check for resume upload form
+    def check_for_resume_upload(self):
+        logger.info("\n Checking for resume upload form")
+        try:
+            self.find_element('div.ui-attachment.jobs-document-upload-redesign-card__container.jobs-document-upload-redesign-card__container--cursor-pointer.jobs-document-upload-redesign-card__container--selected.ui-attachment--pdf', timeout=6.25)
+            logger.info("\n Resume upload form found")
+            return True
+        except:
+            logger.info("\n No Resume upload form found")
+            return False
+
+    # Check form for empty fields
+    def are_form_fields_filled(self):
+        if not self.check_for_resume_upload():
+            logger.info("\n Checking if form fields are filled...")
+            # Select form field sections
+            logger.info("\n Selecting form field sections...")
+            form_sections = self.find_elements('div.jobs-easy-apply-form-section__grouping')
+            # Iterate over the form sections
+            for form_section in form_sections:
+                # Determine which type of form element
+                try:
+                    logger.info("\n Checking for radio buttons")
+                    field_set = form_section.find_element('tag name', 'fieldset')
+                    # Find radio buttons
+                    ipdb.set_trace()
+                except:
+                    try:
+                        logger.info("\n Checking for labels")
+                        label = form_section.find_element('tag name', 'label')
+                        id = label.get_attribute("for")
+                        # Find label's corresponding element
+                        logger.info("\n Finding label's corresponding field")
+                        form_field = self.find_element(f"#{id}")
+                        if form_field.tag_name == 'select':
+                            # Check if dropdown has a selection
+                            logger.info("\n Found dropdown, checking for selection")
+                            default_option = form_field.find_element('tag name', 'option')
+                            if default_option.is_selected():
+                                logger.info("\n Found an unselected dropdown")
+                                dropdown_text = label.text.split("\n")[0]
+                                ipdb.set_trace()
+                                return False
+                                # TODO Logic to make correct dropdown selection
+                        elif form_field.tag_name == 'input' or form_field.tag_name == 'textarea' or form_field.tag_name == 'email':
+                            # Check if form field is empty
+                            logger.info("\n Found text field")
+                            field_value = form_field.get_attribute('value').strip()
+                            if not field_value:
+                                logger.info("\n Found an empty text field")
+                                ipdb.set_trace()
+                                return False
+                                # TODOD Logic to input correct input field text
+                    except:
+                        logger.info("\n No label found")
+        return True
+
     def click_apply(self):
         logger.info("\n Clicking apply... ")
         self.click('button span:contains("Apply")', timeout=6.25)
@@ -165,7 +277,7 @@ class LinkedinBot(BaseCase):
 
         # Close Tab with SeleniumBase
         logger.info("\n Closing tab... ")
-        self.send_keys('body', Keys.COMMAND + 'w')
+        self.driver.close()
 
         # Switch to original tab
         self.switch_to_default_tab()
@@ -180,26 +292,39 @@ class LinkedinBot(BaseCase):
         wait_time = random.randint(1, 5)
         logger.info(f"\n Waiting for {wait_time} seconds... ")
         self.sleep(wait_time)
-        # Create label / tag dictionary and click 'Next' button until 'Review' button is present
+        # Until "Review" button is present
         while not self.is_element_present('button:contains("Review")'):
-            self.extract_label_element_pairs()
-            # Click "Next" button
-            logger.info("\n Clicking next... ")
-            # Check if 'Next' button is present
-            if self.is_element_present('button:contains("Next")'):
-                logger.info("\n Clicking 'Next' Button")
-                self.click('button:contains("Next")', timeout=6.25)
-            # Check if 'Review' button is present
-            elif self.is_element_present():
-                logger.info("\n Clicking 'Review' Button")
-                self.click('button:contains("Review")', timeout=6.25)
+            # Check for empty form fields
+            if not self.are_form_fields_filled():
+                # Wait randomly between 1 and 3 seconds
+                wait_time = random.randint(1, 3)
+                logger.info(f"\n Waiting for {wait_time} seconds... ")
+                self.sleep(wait_time)
+                # Fill form fields
+                # TODO: Add logic for filling in form fields
+                logger.info("\n TODO: filling in empty form fields")
+
+                # self.extract_label_element_pairs()
+            else:
+                # Click "Next" button
+                logger.info("\n Fields are filled.")
+                # Check if 'Next' button is present
+                if self.is_element_present('button:contains("Next")'):
+                    logger.info("\n Clicking 'Next' Button")
+                    self.click('button:contains("Next")', timeout=6.25)
+                # Check if 'Review' button is present
+                elif self.is_element_present('button:contains("Review")'):
+                    logger.info("\n Clicking 'Review' Button")
+                    self.click('button:contains("Review")', timeout=6.25)
 
     # Select Job Cards
     def select_job_cards(self):
         logger.info("\n Selecting Job Cards... ")
+        # Select all the job cards
         job_cards = self.find_elements('div[data-view-name="job-card"]')
         logger.info(f"\n Found {len(job_cards)} job cards. ")
 
+        # Iterate over the job cards
         for job_card in job_cards:
             logger.info(f"\n Clicking job card... {job_card} ")
             job_card.click()
@@ -253,18 +378,18 @@ class LinkedinBot(BaseCase):
         except Exception as e:
             logger.error(f"\n Failed to login. Exiting... {e}")
 
-    # Check for security check
-    @pytest.mark.run(order=3)
-    def test_check_security(self):
-        logger.debug("\n Test: check security... ")
-        try:
-            self.check_security()
-        except Exception as e:
-            logger.error("\n Failed to check security. {e} Exiting... ")
+    # # Check for security check
+    # @pytest.mark.run(order=3)
+    # def test_check_security(self):
+    #     logger.debug("\n Test: check security... ")
+    #     try:
+    #         self.check_security()
+    #     except Exception as e:
+    #         logger.error("\n Failed to check security. {e} Exiting... ")
 
     # Search for job
     @pytest.mark.flaky(reruns=2)
-    @pytest.mark.run(order=4)
+    @pytest.mark.run(order=3)
     def test_search_for_job(self):
         logger.debug("\n Test: search for job... ")
         try:
@@ -273,7 +398,7 @@ class LinkedinBot(BaseCase):
             logger.error(f"\n Failed to search for job. {e} Exiting... ")
 
     # Click Jobs filter button
-    @pytest.mark.run(order=5)
+    @pytest.mark.run(order=4)
     def test_click_jobs_filter_button(self):
         logger.debug("\n Test: click jobs filter button... ")
         try:
@@ -282,7 +407,7 @@ class LinkedinBot(BaseCase):
             logger.error(f"\n Failed to click jobs button. {e} Exiting... ")
 
     # Click Remote filter button
-    @pytest.mark.run(order=6)
+    @pytest.mark.run(order=5)
     def test_filter_remote_results(self):
         logger.debug("\n Test: filter remote results.. ")
         try:
@@ -290,8 +415,8 @@ class LinkedinBot(BaseCase):
         except Exception as e:
             logger.error(f"\n Failed to filter remote results. {e} Exiting... ")
 
-    # Scroll to bottom of search results
-    @pytest.mark.run(order=7)
+    # Scroll to load all of the search results
+    @pytest.mark.run(order=6)
     def test_scroll_within_job_results(self):
         logger.debug("\n Test: scroll to bottom... ")
         try:
@@ -299,30 +424,12 @@ class LinkedinBot(BaseCase):
         except Exception as e:
             logger.error(f"\n Failed to complete scroll. {e} Exiting... ")
 
-    # Select Job Cards
-    @pytest.mark.run(order=8)
+    # Apply to jobs
+    @pytest.mark.run(order=7)
     def test_select_job_cards(self):
         logger.debug("\n Test: select job cards... ")
         try:
             self.select_job_cards()
         except Exception as e:
             logger.error(f"\n Failed to select job cards. {e} Exiting... ")
-
-# Until all job cards have been clicked
-
-  # Click Job Card
-    # If Job Card does not say "easy apply"
-      # Click apply button
-      # Switch to new tab
-      # Fill out application
-      # Close tab
-      # Switch back to original tab
-    # Else if Job Card says "easy apply"
-      # Click easy apply button
-      # While button does not say "Review"
-        # Fill out form fields
-        # Click "Next" button
-    # Click "Review" button
-
-# Click Next Page button
 
