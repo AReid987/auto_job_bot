@@ -14,6 +14,9 @@ pytest = "*"
 transformers = "*"
 command-runner = "*"
 ipdb = "*"
+fuzzywuzzy = "*"
+python-levenshtein = "*"
+llama-cpp-python = "*"
 
 [dev-packages]
 

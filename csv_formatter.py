@@ -35,3 +35,10 @@ def process_csv(file_path):
 processed_csv_data = process_csv('qa_pairs.csv')
 for row in processed_csv_data.items():
   print(f"row: {row}")
+
+# Write to trainer_sheet.csv
+def write_to_trainer_sheet(prompt, answers):
+  with open('trainer_sheet.csv', 'a', newline='\n', encoding='utf-8') as csv_file:
+    writer = csv.writer(csv_file)
+    answers_string = ';'.join(answers)
+    writer.writerow([prompt, answers_string])

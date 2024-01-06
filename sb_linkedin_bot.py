@@ -1,16 +1,18 @@
+import csv
 import random
 from seleniumbase import BaseCase
-# import Keys
-from selenium.webdriver.common.keys import Keys
 BaseCase.main(__name__, __file__, "-s", "--uc", "--demo", "--reuse-session", "--maximize")
 from logger import Logger
 import pytest
 import os
 import ipdb
+from fuzzywuzzy import fuzz
+from csv_formatter import *
+from ai import main
 
 # Instantiate logger
 logger = Logger('sb_linkedin_bot', 'sb_linkedin_bot.log').get_logger()
-
+# TODO : Create a way to track a list for user input history. class variable? class Method?
 class LinkedinBot(BaseCase):
     # Verify login page
     def verify_login_page(self):
@@ -97,7 +99,6 @@ class LinkedinBot(BaseCase):
         self.execute_script(
         "arguments[0].scroll({top: arguments[0].scrollHeight, behavior: 'smooth'})", job_results_container)
 
-
         # Wait randomly between 1 and 5 seconds
         wait_time = random.randint(1, 5)
         logger.info(f"\n Waiting for {wait_time} seconds... ")
@@ -113,98 +114,6 @@ class LinkedinBot(BaseCase):
         logger.info(f"\n Waiting for {wait_time} seconds... ")
         self.sleep(wait_time)
 
-    # Capture questions and corresponding form element
-    def extract_label_element_pairs(self):
-        # Check for regular form label / input pairs
-        # Execute current logic if found
-        # Check for resume upload page
-        # ember792 > div > div:nth-child(2) > form > div > div > div > div.mt2 > div
-        # Write resume upload logic
-        # Alternate checking on each page until "Review button is found"
-        # Click "Review" button
-        # Click "submit button"
-
-        # Find all labels within the form
-        logger.info("\n Finding all labels within the easy apply form... ")
-        form_labels = self.find_elements('div.jobs-easy-apply-content div form label')
-
-        questions_dictionary = {}
-        logger.info("\n Creating Questions Dictionary")
-        for label in form_labels:
-            label_text = label.text.strip().lower()
-            logger.info(f"\n Found label: {label_text}")
-            # Attempt to find the corresponding form element
-            # Strategy 1: Check for "for" attribute in label
-            if label.get_attribute("for"):
-                element_id = label.get_attribute("for")
-                element = self.find_element(f'#{element_id}')
-                logger.info(f"\n Found corresponding element: {element.tag_name} with ID: {element_id}")
-            # Strategy 2: Find input/select/textarea within the same parent
-            else:
-                parent_element = label.find_element_by_xpath("..")
-                element = parent_element.find_element_by_xpath(".//input | .//select | .//textarea")
-                logger.info(f"\n Found corresponding element: {element.tag_name} with ID: {element.id}")
-            # Check if the element exists
-            if element:
-                questions_dictionary[label_text] = element.tag_name
-        logger.info(f"\n Extracted questions dictionary: {questions_dictionary}")
-        return questions_dictionary
-
-    # # Check each type of form field for empty / filled
-    # def are_form_fields_filled(self):
-    #     logger.info("\n Checking if form fields are filled...")
-    #     # Check text inputs and text areas
-    #     text_fields = self.find_elements('form div.ph5 input[type="text"], form  div.ph5 input[type="email], form  div.ph5 textarea')
-    #     for field in text_fields:
-    #         field_value = field.get_attribute('value').strip()
-    #         if not field_value:
-    #             logger.info("\n Found an empty text field.")
-    #             return False
-
-    #     # Check checkboxes
-    #     checkboxes = self.find_elements('form div.ph5 input[type="checkbox"]')
-    #     for checkbox in checkboxes:
-    #         # Check for 'Mark Job as Top Job Choice Job' checkbox
-    #         # TODO : Break 'Top Choice Job Logic Into Separate Function
-    #         if checkbox.accessible_name == 'Mark job as a top choice job':
-    #             logger.info("\n Found a 'Mark Job as Top Job Choice Job' checkbox.")
-    #         elif not checkbox.accessible_name == 'Mark job as a top choice job':
-    #             if not checkbox.is_selected():
-    #                 logger.info("\n Found an unchecked checkbox.")
-    #                 return False
-
-    #     # Check radio buttons
-    #     radio_buttons = self.get_radio_button_groups()
-    #     for group in radio_buttons.values():
-    #         if not any(btn.is_selected() for btn in group):
-    #             logger.info("\n Found an unselected radio button group.")
-    #             return False
-
-    #     # Check dropdowns (select elements)
-    #     dropdowns = self.find_elements('form div.ph5 select')
-    #     for dropdown in dropdowns:
-    #         # Find first <option> in the <select>
-    #         default_option = dropdown.find_element('tag name', 'option')
-    #         # Check if first option is selected
-    #         if default_option.is_selected():
-    #             logger.info("\n Found a dropdown with no selection.")
-    #             return False
-
-    #     logger.info("\n All fields are filled.")
-    #     return True
-
-    # def get_radio_button_groups(self):
-    #     # Group radio buttons by their 'name' attribute
-    #     radio_buttons = self.find_elements('form div.ph5 input[type="radio]')
-    #     groups = {}
-    #     for btn in radio_buttons:
-    #         name = btn.get_attribute('name')
-    #         if name:
-    #             if name not in groups:
-    #                 groups[name] = []
-    #             groups[name].append(btn)
-    #     return groups
-
     # Check for resume upload form
     def check_for_resume_upload(self):
         logger.info("\n Checking for resume upload form")
@@ -216,8 +125,70 @@ class LinkedinBot(BaseCase):
             logger.info("\n No Resume upload form found")
             return False
 
+
+    # Check CSV file for matches to form questions
+    def check_csv_matches(self, form_question):
+        matched_response = ''
+        # Iterate over processed csv file
+        for prompt in [*processed_csv_data.keys()]:
+            similarity = fuzz.token_set_ratio(prompt.lower(), form_question.lower())
+            if similarity > 80:
+                matched_response = processed_csv_data[prompt]
+
+        return matched_response
+
+    # Check for empty Radio button and make correct selection
+    def handle_radio_button(self, field_set, radio_buttons):
+        ipdb.set_trace()
+        # Get the question
+        prompt = field_set.text.split('\n')[0]
+        # Check CSV for matching question
+        csv_check = self.check_csv_matches(prompt)
+        # Use answer if match found
+        if len(csv_check) > 0:
+            # If no match add question / answer choices to data sheet csv
+            answer = csv_check
+            for radio_button in radio_buttons:
+                if radio_button.get_attribute("value") == answer:
+                    radio_button.click()
+                    ipdb.set_trace()
+        # Write answer to trainer_sheet.csv
+        else:
+            # If no match add question / answer choices to data sheet csv
+            answers = [radio_button.get_attribute('value') for radio_button in radio_buttons ]
+            write_to_trainer_sheet(prompt, answers)
+            ipdb.set_trace()
+        #
+        # If not found Give the prompt to the AI to answer the question
+
+    # Check for empty dropdown and make correct selection
+    def handle_dropdown(self, label, form_field):
+        ipdb.set_trace()
+
+    # Check for empty input and make correct selection
+    def handle_input(self, label, form_field):
+        prompt = label.text.split('\n')[0]
+        # Check CSV for matching question
+        csv_check = self.check_csv_matches(prompt)
+        # Use answer if match found
+        if len(csv_check) > 0:
+            # If no match add question / answer choices to data sheet csv
+            answer = csv_check
+            # Write answer to trainer_sheet.csv
+            write_to_trainer_sheet(prompt, answer)
+            # Fill form field with answer
+            ipdb.set_trace()
+            form_field.send_keys(answer)
+        # If not found Give the prompt to the AI to answer the question
+        else:
+            # If no match add question / answer choices to data sheet csv
+            write_to_trainer_sheet(prompt, '<placeholder>')
+            # Ask AI to fill form field with answer
+            #answer = ask_ai_for_answer
+            #form_field.send_keys('')
+            ipdb.set_trace()
     # Check form for empty fields
-    def are_form_fields_filled(self):
+    def check_and_fill_form_fields(self):
         if not self.check_for_resume_upload():
             logger.info("\n Checking if form fields are filled...")
             # Select form field sections
@@ -229,16 +200,22 @@ class LinkedinBot(BaseCase):
                 try:
                     logger.info("\n Checking for radio buttons")
                     field_set = form_section.find_element('tag name', 'fieldset')
-                    # Find radio buttons
-                    ipdb.set_trace()
-                except:
+                    # Find and check radio buttons
+                    radio_buttons = field_set.find_elements('css selector', 'input[type="radio"]')
+                    # Iterate over radio buttons and check if any are selected
+                    if not any(radio_button.is_selected() for radio_button in radio_buttons):
+                        logger.info("\n Found an unselected radio button group")
+                        self.handle_radio_button(field_set, radio_buttons)
+                except Exception as e:
+                    logger.info(f"\n Failed on checking radio buttons: {e}")
                     try:
                         logger.info("\n Checking for labels")
                         label = form_section.find_element('tag name', 'label')
-                        id = label.get_attribute("for")
+                        form_field_id = label.get_attribute("for")
                         # Find label's corresponding element
                         logger.info("\n Finding label's corresponding field")
-                        form_field = self.find_element(f"#{id}")
+                        form_field = self.find_element(f"#{form_field_id}")
+                        # Check if dropdown
                         if form_field.tag_name == 'select':
                             # Check if dropdown has a selection
                             logger.info("\n Found dropdown, checking for selection")
@@ -246,8 +223,8 @@ class LinkedinBot(BaseCase):
                             if default_option.is_selected():
                                 logger.info("\n Found an unselected dropdown")
                                 dropdown_text = label.text.split("\n")[0]
-                                ipdb.set_trace()
-                                return False
+                                # Make correct dropdown selection
+                                self.handle_dropdown(label, form_field)
                                 # TODO Logic to make correct dropdown selection
                         elif form_field.tag_name == 'input' or form_field.tag_name == 'textarea' or form_field.tag_name == 'email':
                             # Check if form field is empty
@@ -255,9 +232,8 @@ class LinkedinBot(BaseCase):
                             field_value = form_field.get_attribute('value').strip()
                             if not field_value:
                                 logger.info("\n Found an empty text field")
-                                ipdb.set_trace()
-                                return False
-                                # TODOD Logic to input correct input field text
+                                self.handle_input(label, form_field)
+                                # TODO  Logic to input correct input field text
                     except:
                         logger.info("\n No label found")
         return True
@@ -281,7 +257,7 @@ class LinkedinBot(BaseCase):
 
         # Switch to original tab
         self.switch_to_default_tab()
-        logger.info("\n Switched to original tab. ")
+        logger.info("\n Switched to original tab.")
 
     # Click Easy Apply button
     def click_easy_apply(self):
@@ -292,20 +268,11 @@ class LinkedinBot(BaseCase):
         wait_time = random.randint(1, 5)
         logger.info(f"\n Waiting for {wait_time} seconds... ")
         self.sleep(wait_time)
-        # Until "Review" button is present
-        while not self.is_element_present('button:contains("Review")'):
-            # Check for empty form fields
-            if not self.are_form_fields_filled():
-                # Wait randomly between 1 and 3 seconds
-                wait_time = random.randint(1, 3)
-                logger.info(f"\n Waiting for {wait_time} seconds... ")
-                self.sleep(wait_time)
-                # Fill form fields
-                # TODO: Add logic for filling in form fields
-                logger.info("\n TODO: filling in empty form fields")
-
-                # self.extract_label_element_pairs()
-            else:
+        # Until "Submit" button is present
+        while not self.is_element_present('button:contains("Submit")'):
+            try:
+                # Check for empty form fields and input correct answer if found
+                self.check_and_fill_form_fields()
                 # Click "Next" button
                 logger.info("\n Fields are filled.")
                 # Check if 'Next' button is present
@@ -316,7 +283,15 @@ class LinkedinBot(BaseCase):
                 elif self.is_element_present('button:contains("Review")'):
                     logger.info("\n Clicking 'Review' Button")
                     self.click('button:contains("Review")', timeout=6.25)
+            except Exception as e:
+                logger.error(f"\n Failed to fill form fields: {e}")
 
+        # If "Submit" button is present
+        if self.is_element_present('button:contains("Submit")'):
+            # Temporarily : quit without submitting application
+            dismiss_button = self.find_element('button.artdeco-button.artdeco-button--circle.artdeco-button--muted.artdeco-button--2.artdeco-button--tertiary.ember-view.artdeco-modal__dismiss')
+            dismiss_button.click()
+            #TODO: Submit application logic
     # Select Job Cards
     def select_job_cards(self):
         logger.info("\n Selecting Job Cards... ")

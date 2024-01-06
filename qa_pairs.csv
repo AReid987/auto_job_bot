@@ -2,3 +2,5 @@ Prompt, Answer
 first name, {FIRST_NAME}
 last name, {LAST_NAME}
 date of birth, {DOB}
+phone number, {PHONE_NUMBER}
+email, {EMAIL}
