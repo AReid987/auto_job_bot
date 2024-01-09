@@ -9,6 +9,7 @@ from langchain.document_loaders import (
     CSVLoader,
     PyMuPDFLoader,
 )
+import fitz
 
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -43,9 +44,10 @@ class DocumentLoader():
     def load_single_document(self, file_path: str) -> List[Document]:
         ext = "." + file_path.rsplit(".", 1)[-1]
         if ext in self.loader_mapping():
-            if 'qa_pairs.csv' in file_path:
-                process_csv(file_path)
+            # if 'qa_pairs.csv' in file_path:
+            #     process_csv(file_path)
             loader_class, loader_args = self.loader_mapping()[ext]
+            # ipdb.set_trace()
             loader = loader_class(file_path, **loader_args)
             return loader.load()
 
@@ -67,7 +69,7 @@ class DocumentLoader():
         with Pool(processes=os.cpu_count()) as pool:
             results = []
             with tqdm(total=len(filtered_files), desc="Loading new documents", ncols=80) as pbar:
-                for i, docs in enumerate(pool.imap_unordered((self.load_single_document), filtered_files)):
+                for i, docs in enumerate(pool.imap_unordered(self.load_single_document, filtered_files)):
                     results.extend(docs)
                     pbar.update()
         return results
@@ -77,7 +79,7 @@ class DocumentLoader():
         Load documents and split into chunks
         """
         print(f"Loading documents from {self.source_directory}")
-        documents = self.load_documents(self.source_directory)
+        documents = self.load_documents(self.source_directory, ignored_files)
         if not documents:
             print("No new documents to load")
             exit(0)
@@ -94,15 +96,20 @@ class DocumentLoader():
         """
         Checks if vectorstore exists
         """
-        db_directory = os.listdir(persist_directory)[0]
-        if os.path.exists(os.path.join(self.persist_directory, db_directory)):
-            list_index_files = glob.glob(os.path.join(
-                self.persist_directory, f"{db_directory}/*.bin"))
-            list_index_files += glob.glob(os.path.join(
-                self.persist_directory, f"{db_directory}", f"{db_directory}/*.pkl"))
-            # AT least 3 documents needed in a working vectorstore
-            if len(list_index_files) > 3:
-                return True
+
+        db_directory = os.listdir(persist_directory)
+        sub_directories = [d for d in db_directory if os.path.isdir(
+            os.path.join(persist_directory, d))]
+
+        for subdir in sub_directories:
+            if os.path.exists(os.path.join(self.persist_directory, subdir)):
+                list_index_files = glob.glob(os.path.join(
+                    self.persist_directory, f"{subdir}/*.bin"))
+                list_index_files += glob.glob(os.path.join(
+                    self.persist_directory, f"{db_directory}/*.pkl"))
+                # AT least 3 documents needed in a working vectorstore
+                if len(list_index_files) > 3:
+                    return True
         return False
 
     def main(self):
