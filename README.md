@@ -14,6 +14,12 @@
   - `ollama run llama2:13b`
   - `ollama run mistral`
 
+#### source_documents
+
+- Add .pdf and .csv files of documents such as:
+  - your resume
+  - exported PDF of your LinkedIn profile to the source_documents directory
+
 #### .env
 
 - Create a _.env_ file with the following variables:
@@ -35,15 +41,14 @@
 
 - _Note_: Feel free to experiment with different AI models: [https://ollama.ai/library](https://ollama.ai/library)
 
-- After completing the _.env_ file, create the model by running in the terminal:
-
-  - `ollama create "MODEL NAME" -f ./Modelfile`
-
 #### Install the requirements
 
-- `pipenv install -r requirements.txt`
+- `pipenv install`
 - `pipenv shell`
 
 #### Execute the main script
 
-- `python main.py`
+- From the project's root directory `cd ..`
+- Then from the project's parent directory `python -m auto_job_app.main`
+- Note: to debug load any modules needed into utils/debug.py
+  - Then run from the project's parent directory: `python -m auto_job_app.utils.debug`

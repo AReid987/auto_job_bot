@@ -1,6 +1,6 @@
 from seleniumbase import BaseCase
 BaseCase.main(__name__, __file__, "--uc", "-s")
-from logger import Logger
+from utils.logger import Logger
 
 # Instantiate logger
 logger = Logger('bot_test', 'bot_test.log').get_logger()

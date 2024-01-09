@@ -4,21 +4,22 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+langchain = "*"
+gpt4all = "*"
+chromadb = "*"
 pandas = "*"
-scikit-learn = "*"
-numpy = "*"
 python-dotenv = "*"
 coloredlogs = "*"
 seleniumbase = "*"
 pytest = "*"
-transformers = "*"
-command-runner = "*"
 ipdb = "*"
 fuzzywuzzy = "*"
+crewai = "*"
+sentence-transformers = "*"
+pymupdf = "*"
 python-levenshtein = "*"
-llama-cpp-python = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.10"

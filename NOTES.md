@@ -1,5 +1,12 @@
 # Notes
 
+## Questions
+
+- How to keep an AICrew execution chain alive during the execution of the bot script?
+- How to generate user details from PDF and / or CSV files?
+- How to use generated user details to create AICrew agent identity?
+- Can multiprocessing be used to answer several form fields at once?
+
 <!-- TODO: Add to CSV file or create new one : -->
 
 'name of technology', 'years of experience'

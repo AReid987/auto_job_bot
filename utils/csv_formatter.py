@@ -1,9 +1,11 @@
 import csv
 from pprint import pprint
 from dotenv import dotenv_values
+import pandas as pd
 
 # Load environment variables
 config = dotenv_values()
+
 def replace_placeholders(text):
   for env_key, env_value in config.items():
     placeholder = f"{{{env_key}}}"
@@ -16,10 +18,7 @@ def process_csv(file_path):
   # Open the CSV file
   with open(file_path, newline='', encoding='utf-8') as csv_file:
     # Read the CSV file
-    csv_reader = csv.reader(csv_file)
-    # Skip the header row
-    next(csv_reader)
-    # Loop through each row in the CSV file
+    csv_reader = csv.reader(csv_file)    # Loop through each row in the CSV file
     for row in csv_reader:
       # Get the question and answer from the row
       question = row[0]
@@ -31,10 +30,19 @@ def process_csv(file_path):
 
   return processed_data
 
+def make_data_frame(data_dict):
+  df = pd.DataFrame(list(data_dict.items())[1:-1], columns = ['Prompt', 'Answer'])
+  return df
+
+def make_data_frame_from_csv(file_path):
+  processed_data = process_csv(file_path)
+  data_frame = make_data_frame(processed_data)
+
+  return data_frame
+
 # Process the CSV file
-processed_csv_data = process_csv('qa_pairs.csv')
-for row in processed_csv_data.items():
-  print(f"row: {row}")
+# processed_csv_data = make_data_frame_from_csv('qa_pairs.csv')
+# pprint(processed_csv_data)
 
 # Write to trainer_sheet.csv
 def write_to_trainer_sheet(prompt, answers):
@@ -42,3 +50,4 @@ def write_to_trainer_sheet(prompt, answers):
     writer = csv.writer(csv_file)
     answers_string = ';'.join(answers)
     writer.writerow([prompt, answers_string])
+
