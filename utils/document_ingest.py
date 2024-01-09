@@ -1,3 +1,6 @@
+from enum import unique
+from gc import collect
+from importlib import metadata
 from .csv_formatter import process_csv
 import os
 import glob
@@ -9,7 +12,7 @@ from langchain.document_loaders import (
     CSVLoader,
     PyMuPDFLoader,
 )
-import fitz
+import hashlib
 
 from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -40,6 +43,10 @@ class DocumentLoader():
             ".pdf": (PyMuPDFLoader, {}),
         }
         return LOADER_MAPPING
+
+    def compute_document_uid(self, document: Document) -> str:
+        document_text = document.page_content
+        return hashlib.sha256((document_text.encode())).hexdigest()
 
     def load_single_document(self, file_path: str) -> List[Document]:
         ext = "." + file_path.rsplit(".", 1)[-1]
@@ -122,21 +129,37 @@ class DocumentLoader():
             print(
                 f"Appending to existing vectorestore at {self.persist_directory}")
             db = Chroma(persist_directory=self.persist_directory,
-                        embedding_function=embeddings, client_settings=CHROMA_SETTINGS)
+                        embedding_function=embeddings)
             collection = db.get()
-            texts = self.process_documents(
-                [metadata['source'] for metadata in collection['metadatas']])
-            print('Creating embeddings. This might take a while...')
-            db.add_documents(texts)
+            existing_uids = set(id
+                                for id in collection['ids'])
+            texts = self.process_documents()
+            processed_texts = [
+                (text, self.compute_document_uid(text)) for text in texts]
+            new_texts = [
+                text for text, uid in processed_texts if uid not in existing_uids]
+            if new_texts:
+                print(
+                    'Creating embeddings for existing vectorestore. This might take a while...')
+                db.add_documents(new_texts)
+                db.persist()
+            else:
+                print('No new texts found. exiting to avoid duplication.')
         else:
             # Create and store vectorstore locally
             print("Creating new vectorestore")
             texts = self.process_documents()
+            ids = [self.compute_document_uid(text) for text in texts]
+            unique_ids = list(set(ids))
+
+            seen_ids = set()
+
+            unique_docs = [text for text, id in zip(
+                texts, ids) if id not in seen_ids and (seen_ids.add(id) or True)]
             print('Creating embeddings. This might take a while...')
             db = Chroma.from_documents(
-                texts, embeddings, persist_directory=self.persist_directory)
-        db.persist()
-        db = None
+                documents=unique_docs, embedding=embeddings, ids=unique_ids, persist_directory=self.persist_directory)
+            db.persist()
         print("Ingestion complete! You can now give your CrewAI agent your identity.")
 
 
