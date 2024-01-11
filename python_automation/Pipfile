@@ -18,6 +18,10 @@ crewai = "*"
 sentence-transformers = "*"
 pymupdf = "*"
 python-levenshtein = "*"
+pypdf2 = "*"
+pypdfium2 = "*"
+matplotlib = "*"
+pytesseract = "*"
 
 [dev-packages]
 

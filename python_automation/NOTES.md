@@ -1,22 +1,5 @@
 # Notes
 
-## Requirements Gathering
-
-- thought: rather than the cumbersome approach up uploading and processing resume PDF and CSV files, create an input mechanism to collect user's details on account creation.
-- Details Needed:
-  - First Name
-  - Last Name
-  - LinkedIn email
-  - LinkedIn password
-  - LinkedIn URL ( could automate collection via SBase )
-  - Date of Birth
-  - Job Titles to apply for
-  - Remote and Location Preferences
-  - Salary Expectations
-  - Technologies and years of experience
-  - Education history
-  - Work history
-
 ## Questions
 
 - How to keep an AICrew execution chain alive during the execution of the bot script?

@@ -1,3 +1,4 @@
+from ast import mod
 import csv
 from pprint import pprint
 from dotenv import dotenv_values
@@ -19,7 +20,7 @@ def replace_placeholders(text):
 def process_csv(file_path):
     processed_data = {}
     # Open the CSV file
-    with open(file_path, '+', newline='', encoding='utf-8') as csv_file:
+    with open(file_path, mode='r', encoding='utf-8') as csv_file:
         # Read the CSV file
         # Loop through each row in the CSV file
         csv_reader = csv.reader(csv_file)
@@ -31,9 +32,7 @@ def process_csv(file_path):
             question = replace_placeholders(question)
             answer = replace_placeholders(answer)
             processed_data[question] = answer
-    # csv_writer = csv.writer(csv_file)
-    # csv_writer.writerow([question, answer])
-    # csv_file.close()
+
     return processed_data
 
 

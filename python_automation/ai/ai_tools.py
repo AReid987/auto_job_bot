@@ -1,14 +1,19 @@
+import os
 from ..utils.csv_formatter import make_data_frame_from_csv
 from ..utils.logger import Logger
+from ..utils.constants import CHROMA_SETTINGS
 from langchain.tools import tool
-from langchain.evaluation import load_evaluator
+from langchain.vectorstores import Chroma
 import pandas as pd
+from langchain.embeddings import HuggingFaceEmbeddings
 from fuzzywuzzy import fuzz
 import ipdb
 import random
 
 # Instantiate logger
 logger = Logger('ai_tools', 'ai_tools.log').get_logger()
+embeddings_model_name = os.environ.get(
+    'EMBEDDINGS_MODEL_NAME', 'all-MiniLM-L6-v2')
 
 
 class CSVTools():
@@ -47,3 +52,18 @@ class CSVTools():
             return str(random.randint(1, 10))
         else:
             return "Prompt not related to work experience."
+
+
+class UserDataTools:
+    @tool("Tool to fetch the user data")
+    def fetch_user_data(query) -> str:
+        """
+        Tool for retrieving User uploaded data from the vectorstore.
+        """
+
+        embeddings = HuggingFaceEmbeddings(
+            model_name=embeddings_model_name)
+        # Setup to access Chroma vectorstore
+        db = Chroma(persist_directory=CHROMA_SETTINGS.persist_directory,
+                    embedding_function=embeddings)
+        ipdb.set_trace()

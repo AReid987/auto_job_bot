@@ -1,17 +1,13 @@
-from enum import unique
-from gc import collect
-from importlib import metadata
-from .csv_formatter import process_csv
+
 import os
 import glob
 from typing import List, Dict
 from multiprocessing import Pool
 from tqdm import tqdm
 import ipdb
-from langchain.document_loaders import (
-    CSVLoader,
-    PyMuPDFLoader,
-)
+
+from .custom_pdf_loader import CustomPDFLoader
+from .custom_csv_loader import CustomCSVLoader
 import hashlib
 
 from langchain.docstore.document import Document
@@ -39,8 +35,8 @@ class DocumentLoader():
     # Map files extensions to document loaders and their arguments
     def loader_mapping(self) -> Dict:
         LOADER_MAPPING = {
-            ".csv": (CSVLoader, {}),
-            ".pdf": (PyMuPDFLoader, {}),
+            ".csv": (CustomCSVLoader, {}),
+            ".pdf": (CustomPDFLoader, {}),
         }
         return LOADER_MAPPING
 
@@ -56,6 +52,7 @@ class DocumentLoader():
             loader_class, loader_args = self.loader_mapping()[ext]
             # ipdb.set_trace()
             loader = loader_class(file_path, **loader_args)
+            print(f"loader: {loader}")
             return loader.load()
 
         raise ValueError(f"Unsupported file extension '{ext}'")
@@ -72,7 +69,6 @@ class DocumentLoader():
             )
         filtered_files = [
             file_path for file_path in all_files if file_path not in ignored_files]
-
         with Pool(processes=os.cpu_count()) as pool:
             results = []
             with tqdm(total=len(filtered_files), desc="Loading new documents", ncols=80) as pbar:
@@ -87,6 +83,7 @@ class DocumentLoader():
         """
         print(f"Loading documents from {self.source_directory}")
         documents = self.load_documents(self.source_directory, ignored_files)
+
         if not documents:
             print("No new documents to load")
             exit(0)
