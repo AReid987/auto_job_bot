@@ -5,14 +5,14 @@ class AiTasks():
   def analysis(self, agent):
     return Task(
       description="""
-      Analyze a CSV for matches to a given prompt and respond appropriately. Log no matches to a separate CSV file.
+      Analyze a CSV for matches to a given prompt and respond appropriately. Log new matches to a separate CSV file.
       """,
       agent=agent
     )
 
   def check_csv(self, agent):
     return Task(description=dedent("""
-        Search the CSV file for exact or partial matches.
+        Analyze a CSV file's 'Prompt' column for matches to a given search query. I a match is found respond with the value from the 'Answer' column for the matching row. When no matches are found, log the search query to a separate CSV file.
       """),
       agent=agent
     )

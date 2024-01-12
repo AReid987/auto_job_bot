@@ -14,7 +14,7 @@ from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
-from ..utils.constants import CHROMA_SETTINGS
+from utils.constants import CHROMA_SETTINGS
 
 cwd = os.getcwd()
 persist_db = os.environ.get('PERSIST_DIRECTORY', 'db')
@@ -26,11 +26,11 @@ embeddings_model_name = os.environ.get(
 class DocumentLoader():
     # Load environment variables
     def __init__(self) -> None:
-        self.source_directory = f'{cwd}/auto_job_app/{source_documents}'
+        self.source_directory = f'{cwd}/{source_documents}'
         self.chunk_size = 500
         self.chunk_overlap = 50
         self.embeddings_model_name = embeddings_model_name
-        self.persist_directory = f'{cwd}/auto_job_app/{persist_db}'
+        self.persist_directory = f'{cwd}/{persist_db}'
 
     # Map files extensions to document loaders and their arguments
     def loader_mapping(self) -> Dict:

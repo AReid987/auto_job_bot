@@ -1,4 +1,4 @@
-from .utils.document_ingest import *
+from utils.document_ingest import *
 
 if __name__ == "__main__":
     # Create or add to the Chroma DB

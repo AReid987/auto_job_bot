@@ -2,7 +2,7 @@
 from crewai import Crew
 from .ai_agents import AiAgents
 from .ai_tasks import AiTasks
-from ..utils.logger import Logger
+from utils.logger import Logger
 import ipdb
 
 logger = Logger('ai_crew_logger', 'ai_crew_logger.log').get_logger()
@@ -29,7 +29,6 @@ class AiCrew:
         )
         csv_search_result = crew_for_csv.kickoff()
         logger.info(f'CSV Search Result: {csv_search_result}')
-        # ipdb.set_trace()
         if "No matches found".lower() in csv_search_result.lower():
             answer_form_task.description = search_query
 

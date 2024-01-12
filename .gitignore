@@ -1,0 +1,47 @@
+/python_automation/auto-job
+/python_automation/.venv
+/python_automation/.pytest_cache
+/python_automation/.env
+/python_automation/recordings
+/python_automation/new_recording.py
+/python_automation/cached_element.py
+/python_automation/custom_web_driver.py
+/python_automation/linkedin_bot.py
+# ignore all files ending in .log
+/python_automation/*.log
+
+# compiled output
+/nestjs_api/dist
+/nestjs_api/node_modules
+
+# Logs
+/nestjs_api/logs
+/nestjs_api/*.log
+/nestjs_api/npm-debug.log*
+/nestjs_api/pnpm-debug.log*
+/nestjs_api/yarn-debug.log*
+/nestjs_api/yarn-error.log*
+/nestjs_api/lerna-debug.log*
+
+# OS
+/nestjs_api/.DS_Store
+
+# Tests
+/nestjs_api/coverage
+/nestjs_api/.nyc_output
+
+# IDEs and editors
+/nestjs_api/.idea
+/nestjs_api/.project
+/nestjs_api/.classpath
+/nestjs_api/.c9/
+/nestjs_api/*.launch
+/nestjs_api/.settings/
+/nestjs_api/*.sublime-workspace
+
+# IDE - VSCode
+/nestjs_api/.vscode/*
+/nestjs_api/!.vscode/settings.json
+/nestjs_api/!.vscode/tasks.json
+/nestjs_api/!.vscode/launch.json
+/nestjs_api/!.vscode/extensions.json/nestjs_api/

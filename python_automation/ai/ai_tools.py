@@ -1,7 +1,5 @@
 import os
-from ..utils.csv_formatter import make_data_frame_from_csv
-from ..utils.logger import Logger
-from ..utils.constants import CHROMA_SETTINGS
+from utils import *
 from langchain.tools import tool
 from langchain.vectorstores import Chroma
 import pandas as pd
@@ -22,7 +20,7 @@ class CSVTools():
         """
         Tool for searching in CSV files using fuzzy matching.
         Input format: 'file_path|search_query'.
-        Returns matching rows or similar matches if an exact match is not found.
+        Returns rows matching a search query or similar matches if an exact match is not found.
         """
         file_path, search_query = arguments.split('|')
         # Process the CSV file and convert it to DataFrame using imported function

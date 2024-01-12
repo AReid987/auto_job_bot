@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String           @id @default(uuid())
+  name            String
+  email           String           @unique
+  // TODO: password strategy (hashing? auth0?)
+  jobPreferences  JobPreference[]
+  jobApplications JobApplication[]
+  aiAgents        AI_Agent[]
+}
+
+model JobPreference {
+  id     String @id @default(uuid())
+  name   String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model JobApplication {
+  id                String   @id @default(uuid())
+  jobId             String
+  applicationStatus String
+  dateApplied       DateTime
+  user              User     @relation(fields: [userId], references: [id])
+  userId            String
+}
+
+model AI_Agent {
+  id          String @id @default(uuid())
+  agentConfig Json
+  user        User   @relation(fields: [userId], references: [id])
+  userId      String
+}

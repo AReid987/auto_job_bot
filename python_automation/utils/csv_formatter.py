@@ -1,9 +1,8 @@
-from ast import mod
 import csv
 from pprint import pprint
 from dotenv import dotenv_values
 import pandas as pd
-
+import ipdb
 # Load environment variables
 config = dotenv_values()
 
@@ -20,6 +19,7 @@ def replace_placeholders(text):
 def process_csv(file_path):
     processed_data = {}
     # Open the CSV file
+    file_path = file_path.strip("'")
     with open(file_path, mode='r', encoding='utf-8') as csv_file:
         # Read the CSV file
         # Loop through each row in the CSV file

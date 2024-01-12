@@ -1,5 +1,13 @@
 # Notes
 
+<!-- TODO:
+  1. set up Auth0 (or better option?)
+  2. Dockerize NestJS app (unless parent should be dockerized)
+  3. Create basic NextJS app
+  4. Authorization and Authentication in NextJS working with backend
+  5. Deploy options
+  6  -->
+
 ## Requirements Gathering
 
 - thought: rather than the cumbersome approach up uploading and processing resume PDF and CSV files, create an input mechanism to collect user's details on account creation.
