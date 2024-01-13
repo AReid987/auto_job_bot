@@ -1,3 +1,4 @@
+import os
 import csv
 from pprint import pprint
 from dotenv import dotenv_values
@@ -17,14 +18,22 @@ def replace_placeholders(text):
 
 
 def process_csv(file_path):
+    cwd = os.getcwd()
+    current_file_path = os.path.abspath(__file__)
+    current_directory = os.path.dirname(current_file_path)
+    parent_directory = os.path.dirname(current_directory)
+    parent_directory_name = os.path.basename(parent_directory)
+    source_documents = os.environ.get('SOURCE_DIRECTORY', 'source_documents')
     processed_data = {}
     # Open the CSV file
     file_path = file_path.strip("'")
-    with open(file_path, mode='r', encoding='utf-8') as csv_file:
+    csv_file_path = f'{parent_directory_name}/{source_documents}/{file_path}'
+    with open(csv_file_path, mode='r', encoding='utf-8') as csv_file:
         # Read the CSV file
         # Loop through each row in the CSV file
         csv_reader = csv.reader(csv_file)
         for row in csv_reader:
+            print(row)
             # Get the question and answer from the row
             question = row[0]
             answer = row[1]

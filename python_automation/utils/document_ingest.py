@@ -14,11 +14,16 @@ from langchain.docstore.document import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
-from utils.constants import CHROMA_SETTINGS
+from .constants import CHROMA_SETTINGS
 
 cwd = os.getcwd()
-persist_db = os.environ.get('PERSIST_DIRECTORY', 'db')
+current_file_path = os.path.abspath(__file__)
+current_directory = os.path.dirname(current_file_path)
+parent_directory = os.path.dirname(current_directory)
+parent_directory_name = os.path.basename(parent_directory)
 source_documents = os.environ.get('SOURCE_DIRECTORY', 'source_documents')
+persist_db = os.environ.get('PERSIST_DIRECTORY', 'db')
+
 embeddings_model_name = os.environ.get(
     'EMBEDDINGS_MODEL_NAME', 'all-MiniLM-L6-v2')
 
@@ -26,11 +31,11 @@ embeddings_model_name = os.environ.get(
 class DocumentLoader():
     # Load environment variables
     def __init__(self) -> None:
-        self.source_directory = f'{cwd}/{source_documents}'
+        self.source_directory = f'{cwd}/{parent_directory_name}/{source_documents}'
         self.chunk_size = 500
         self.chunk_overlap = 50
         self.embeddings_model_name = embeddings_model_name
-        self.persist_directory = f'{cwd}/{persist_db}'
+        self.persist_directory = f'{cwd}/{parent_directory_name}/{persist_db}'
 
     # Map files extensions to document loaders and their arguments
     def loader_mapping(self) -> Dict:

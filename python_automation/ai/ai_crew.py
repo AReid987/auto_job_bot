@@ -2,10 +2,10 @@
 from crewai import Crew
 from .ai_agents import AiAgents
 from .ai_tasks import AiTasks
-from utils.logger import Logger
+from python_automation.utils.logger import Logger
 import ipdb
 
-logger = Logger('ai_crew_logger', 'ai_crew_logger.log').get_logger()
+logger = Logger('ai_crew_logger', 'python_automation/ai/logs/ai_crew_logger.log').get_logger()
 
 
 class AiCrew:

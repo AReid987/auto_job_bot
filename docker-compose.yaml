@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    env_file: ./.env
+    container_name: postgres
+    environment:
+      - POSTGRES_DB=auto_job_db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  nestjs_server:
+    build:
+      context: ./nestjs_api
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    container_name: nestjs_api
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=${PORT}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    command: ["./wait-for-postgres.sh", "db", "dumb-init", "node", "dist/main"]
+    volumes:
+      - ./nestjs_api:/app/src
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: nestjs_pgadmin4
+    env_file: ./.env
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=$PGADMIN_DEFAULT_EMAIL
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "5050:80"
+    depends_on:
+      - db

@@ -1,6 +1,7 @@
 import os
-from utils import *
+from python_automation.utils import *
 from langchain.tools import tool
+from langchain.agents import Tool
 from langchain.vectorstores import Chroma
 import pandas as pd
 from langchain.embeddings import HuggingFaceEmbeddings
@@ -9,7 +10,7 @@ import ipdb
 import random
 
 # Instantiate logger
-logger = Logger('ai_tools', 'ai_tools.log').get_logger()
+logger = Logger('ai_tools', 'python_automation/ai/logs/ai_tools.log').get_logger()
 embeddings_model_name = os.environ.get(
     'EMBEDDINGS_MODEL_NAME', 'all-MiniLM-L6-v2')
 
