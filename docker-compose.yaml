@@ -29,9 +29,10 @@ services:
       - "3000:3000"
     depends_on:
       - db
-    command: ["./wait-for-postgres.sh", "db", "dumb-init", "node", "dist/main"]
+    command: /bin/bash -c "./create-db.sh && npx prisma migrate deploy"
     volumes:
       - ./nestjs_api:/app/src
+      - ./nestjs_api/create-db.sh:/app/src/create-db.sh
 
   pgadmin:
     image: dpage/pgadmin4
