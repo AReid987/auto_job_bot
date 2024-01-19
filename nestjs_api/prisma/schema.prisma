@@ -4,40 +4,90 @@
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+// TODO: password strategy (hashing? auth0?)
 model User {
-  id              String           @id @default(uuid())
-  name            String
-  email           String           @unique
-  // TODO: password strategy (hashing? auth0?)
-  jobPreferences  JobPreference[]
-  jobApplications JobApplication[]
-  aiAgents        AI_Agent[]
+  id               String             @id @default(uuid())
+  firstName        String             @map("first_name")
+  lastName         String             @map("last_name")
+  email            String             @unique
+  userProfile      UserProfile?
+  jobSearches      JobSearch[]
+  aiAgents         AIAgent[]
+  SearchPreference SearchPreference[]
+
+  @@map("users")
 }
 
-model JobPreference {
-  id     String @id @default(uuid())
-  name   String
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+model UserProfile {
+  id             String @id @default(uuid())
+  additionalInfo Json   @map("additional_info")
+  user           User   @relation(fields: [userId], references: [id])
+  userId         String @unique @map("user_id")
+
+  @@map("user_profiles")
+}
+
+model JobTitle {
+  id          String      @id @default(uuid())
+  title       String
+  jobSearches JobSearch[] @relation("JobTitlesToJobSearches")
+
+  @@map("job_titles")
+}
+
+model JobSearch {
+  id              String           @id @default(uuid())
+  startDate       DateTime         @map("start_date")
+  user            User             @relation(fields: [userId], references: [id])
+  userId          String           @map("user_id")
+  jobApplications JobApplication[]
+  jobTitles       JobTitle[]       @relation("JobTitlesToJobSearches")
+
+  @@map("job_searches")
+}
+
+model SearchPreference {
+  id        String  @id @default(uuid())
+  remote    Boolean
+  location  String
+  minSalary Float   @map("min_salary")
+  userId    String  @map("user_id")
+  user      User    @relation(fields: [userId], references: [id])
+
+  @@map("search_preferences")
 }
 
 model JobApplication {
-  id                String   @id @default(uuid())
-  jobId             String
-  applicationStatus String
-  dateApplied       DateTime
-  user              User     @relation(fields: [userId], references: [id])
-  userId            String
+  id              String            @id @default(uuid())
+  applicationDate DateTime          @map("application_date")
+  status          ApplicationStatus
+  formResponses   Json
+  jobSearch       JobSearch         @relation(fields: [jobSearchId], references: [id])
+  jobSearchId     String            @map("job_search_id")
+
+  @@map("job_applications")
 }
 
-model AI_Agent {
-  id          String @id @default(uuid())
-  agentConfig Json
-  user        User   @relation(fields: [userId], references: [id])
-  userId      String
+model AIAgent {
+  id        String @id @default(uuid())
+  name      String
+  role      String
+  goal      String
+  backstory String
+  userId    String @map("user_id")
+  user      User   @relation(fields: [userId], references: [id])
+
+  @@map("ai_agents")
+}
+
+enum ApplicationStatus {
+  pending
+  submitted
+  rejected
 }

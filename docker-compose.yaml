@@ -1,15 +1,17 @@
 services:
   db:
-    image: postgres
+    build:
+      context: ./postgresql
+      dockerfile: Dockerfile
     restart: always
     env_file: ./.env
     container_name: postgres
     environment:
-      - POSTGRES_DB=auto_job_db
+      - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - ./postgresql/postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   nestjs_server:
