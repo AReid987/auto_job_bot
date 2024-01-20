@@ -1,6 +1,5 @@
-# User official PostgreSQL image as a base
 FROM postgres:latest
 
-# Copy initialization scripts
+COPY init-db.sh /docker-entrypoint-initdb.d/
 
-# Set environment variables
+EXPOSE 5432

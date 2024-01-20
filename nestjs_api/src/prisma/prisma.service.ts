@@ -20,9 +20,17 @@ export class PrismaService
         },
       },
     });
-    console.log('Database URL:', this.configService.get('DATABASE_URL'));
+    this.logger.info(
+      `Database URL: ${configService.get<string>('DATABASE_URL')}`,
+    );
   }
   async onModuleInit() {
+    const databaseUrl = this.configService.get<string>('DATABASE_URL');
+
+    if (!databaseUrl) {
+      throw new Error('DATABASE_URL is not defined');
+    }
+
     try {
       await this.$connect();
       this.logger.info('Connected to DB');

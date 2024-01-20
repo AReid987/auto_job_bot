@@ -4,45 +4,48 @@ services:
       context: ./postgresql
       dockerfile: Dockerfile
     restart: always
-    env_file: ./.env
+    env_file: .env
     container_name: postgres
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - ./postgresql/postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
   nestjs_server:
     build:
       context: ./nestjs_api
       dockerfile: Dockerfile
     env_file:
-      - ./.env
+      - .env
     container_name: nestjs_api
     environment:
       - NODE_ENV=production
       - DATABASE_URL=${DATABASE_URL}
-      - PORT=${PORT}
+      - POSTGRES_PORT=${POSTGRES_PORT}
     ports:
       - "3000:3000"
     depends_on:
       - db
-    command: /bin/bash -c "./create-db.sh && npx prisma migrate deploy"
     volumes:
       - ./nestjs_api:/app/src
-      - ./nestjs_api/create-db.sh:/app/src/create-db.sh
+    command: /bin/sh -c "dockerize -wait tcp://db:${POSTGRES_PORT} -timeout 30s && pnpm run start:prod"
 
   pgadmin:
     image: dpage/pgadmin4
     restart: always
     container_name: nestjs_pgadmin4
-    env_file: ./.env
+    env_file: .env
     environment:
-      - PGADMIN_DEFAULT_EMAIL=$PGADMIN_DEFAULT_EMAIL
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
     ports:
       - "5050:80"
     depends_on:
       - db
+
+volumes:
+  postgres_data:

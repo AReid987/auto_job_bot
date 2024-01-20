@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { DatabaseInitModule } from './database-init/database-init.module';
 @Module({
   imports: [
     LoggerModule.forRoot({
@@ -20,8 +21,11 @@ import { PrismaModule } from './prisma/prisma.module';
     }),
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '../.env',
+      expandVariables: true,
     }),
     PrismaModule,
+    DatabaseInitModule,
   ],
   controllers: [AppController],
   providers: [AppService],
