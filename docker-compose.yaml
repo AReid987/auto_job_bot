@@ -14,25 +14,35 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   nestjs_server:
     build:
       context: ./nestjs_api
       dockerfile: Dockerfile
+      args:
+        - TARGET_ENV=${TARGET_ENV}
     env_file:
       - .env
     container_name: nestjs_api
     environment:
-      - NODE_ENV=production
-      - DATABASE_URL=${DATABASE_URL}
       - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      - DISABLE_ERD=true
     ports:
       - "3000:3000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
-      - ./nestjs_api:/app/src
-    command: /bin/sh -c "dockerize -wait tcp://db:${POSTGRES_PORT} -timeout 30s && pnpm run start:prod"
+      - .:/nestjs_api:/usr/src/app
+      # - ./nestjs_api/usr/src/app/node_modules:/usr/src/app/node_modules
+    command: /bin/sh -c "dockerize -wait tcp://db:${POSTGRES_PORT} -timeout 30s && if [ \"$$TARGET_ENV\" = \"development\" ]; then pnpm run start:dev; else dumb-init node dist/main; fi"
 
   pgadmin:
     image: dpage/pgadmin4

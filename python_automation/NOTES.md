@@ -7,7 +7,7 @@
 - How to use generated user details to create AICrew agent identity?
 - Can multiprocessing be used to answer several form fields at once?
 
-<!-- TODO: Add to CSV file or create new one : -->
+<!-- * TODO: Add to CSV file or create new one : -->
 
 'name of technology', 'years of experience'
 'React', '6'

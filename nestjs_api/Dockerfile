@@ -11,15 +11,14 @@ RUN corepack enable
 # Set working directory for all build stages.
 WORKDIR /usr/src/app
 
-ENV DOCKERIZE_VERSION v0.7.0
-
 # Install dockerize
 ENV DOCKERIZE_VERSION v0.7.0
 
 RUN apk update --no-cache && apk add --no-cache wget openssl
 RUN wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin
 RUN apk del wget
-# Install dependencies
+# Dependencies stage
+################################################################################
 FROM base as deps
 
 COPY --chown=node:node nest-cli.json ./
@@ -29,12 +28,22 @@ COPY --chown=node:node ./prisma ./
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm install --no-frozen-lockfile
 
+# Development buildstage
 ################################################################################
-# Create a stage for building the application.
+FROM deps as development
+COPY --chown=node:node . .
+CMD ["pnpm", "run", "start:dev"]
+
+# Production build stage
+################################################################################
 FROM deps as build
+
 COPY --chown=node:node . .
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile
+    pnpm install --no-frozen-lockfile
+ENV DISABLE_ERD=true
+# Deletes lines 8-14 from prisma/schema.prisma
+RUN sed -i '6,14d' ./prisma/schema.prisma
 RUN npx prisma generate
 RUN pnpm run build
 
@@ -44,12 +53,12 @@ FROM base as final
 RUN apk add --update dumb-init postgresql-client
 ENV NODE_ENV production
 
-USER node
-
 COPY --chown=node:node --from=build /usr/src/app/package*.json /usr/src/app/pnpm-lock.yaml ./
 
 COPY --chown=node:node --from=build /usr/src/app/node_modules/ ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+
+USER node
 
 EXPOSE 3000
 

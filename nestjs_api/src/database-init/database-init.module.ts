@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { Global, Module } from '@nestjs/common';
 import { DatabaseInitService } from './database-init.service';
+@Global()
 @Module({
-  imports: [ConfigModule],
   providers: [DatabaseInitService],
+  exports: [DatabaseInitService],
 })
 export class DatabaseInitModule {}

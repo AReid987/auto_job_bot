@@ -1,6 +1,6 @@
 # Notes
 
-<!-- TODO:
+<!-- * TODO:
   1. set up Auth0 (or better option?)
   2. Dockerize NestJS app (unless parent should be dockerized)
   3. Create basic NextJS app
@@ -32,7 +32,7 @@
 - How to use generated user details to create AICrew agent identity?
 - Can multiprocessing be used to answer several form fields at once?
 
-<!-- TODO: Add to CSV file or create new one : -->
+<!-- * TODO: Add to CSV file or create new one : -->
 
 'name of technology', 'years of experience'
 'React', '6'
