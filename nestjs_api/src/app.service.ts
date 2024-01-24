@@ -1,11 +1,6 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { DatabaseInitService } from './database-init/database-init.service';
+import { Injectable } from '@nestjs/common';
 @Injectable()
-export class AppService implements OnModuleInit {
-  constructor(private readonly databaseInitService: DatabaseInitService) {}
-  async onModuleInit() {
-    // await this.databaseInitService.onModuleInit();
-  }
+export class AppService {
   getHello(): string {
     return 'Hello World!';
   }

@@ -1,12 +1,12 @@
 import { Module, OnApplicationBootstrap } from '@nestjs/common';
-import { LoggerModule } from 'nestjs-pino';
 import { ConfigModule } from '@nestjs/config';
+import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PrismaModule } from './prisma/prisma.module';
 import { DatabaseInitModule } from './database-init/database-init.module';
-import { HealthModule } from './health/health.module';
 import { DatabaseInitService } from './database-init/database-init.service'; // Import the service
+import { HealthModule } from './health/health.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -22,7 +22,9 @@ import { DatabaseInitService } from './database-init/database-init.service'; // 
           options: {
             singleLine: true,
             colorize: true,
-            translateTime: 'UTC:mm/dd/yyyy, h:MM:ss TT Z',
+            translateTime: 'SYS:mm/dd/yyyy, h:MM:ss TT Z',
+            messageFormat:
+              '{level} - {context} - {msg} - {if url}{url: {url}{end}',
           },
         },
       },
