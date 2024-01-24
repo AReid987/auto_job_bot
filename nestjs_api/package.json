@@ -24,7 +24,7 @@
     ]
   },
   "scripts": {
-    "prepare": "cd .. && husky install front/.husky",
+    "prepare": "cd .. && husky install nestjs_api/.husky",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" && pretty-quick",
     "start": "node dist/main",
