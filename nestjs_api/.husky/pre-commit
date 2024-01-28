@@ -1,3 +1,2 @@
 cd nestjs_api
-pnpm format
-pnpm lint
+pnpm lint-staged

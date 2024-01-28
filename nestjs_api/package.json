@@ -23,7 +23,7 @@
     "prepare": "cd .. && husky nestjs_api/.husky"
   },
   "lint-staged": {
-    "*.{js,ts,tsx": [
+    "*.{js,ts,tsx}": [
       "eslint --caches --fix",
       "prettier --write"
     ],
