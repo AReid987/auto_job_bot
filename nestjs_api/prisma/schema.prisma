@@ -6,10 +6,10 @@ generator client {
 }
 
 generator erd {
-  provider = "prisma-erd-generator"
-  output = "../prisma-erd.png"
-  theme = "dark"
-  mmdcPath = "./node_modules/.bin/"
+  provider                  = "prisma-erd-generator"
+  output                    = "../prisma-erd.png"
+  theme                     = "dark"
+  mmdcPath                  = "./node_modules/.bin/"
   includeRelationFromFields = true
 }
 
@@ -18,18 +18,17 @@ generator erd {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-
 }
 
 // ? REVIEW - : password strategy (hashing? auth0?)
 model User {
-  id               String             @id @default(uuid())
-  firstName        String             @map("first_name")
-  lastName         String             @map("last_name")
-  email            String             @unique
-  userProfile      UserProfile?
-  jobSearches      JobSearch[]
-  aiAgents         AIAgent[]
+  id                String             @id @default(uuid())
+  firstName         String             @map("first_name")
+  lastName          String             @map("last_name")
+  email             String             @unique
+  userProfile       UserProfile?
+  jobSearches       JobSearch[]
+  aiAgents          AIAgent[]
   searchPreferences SearchPreference[]
 
   @@map("users")
@@ -51,11 +50,12 @@ model JobTitle {
 
   @@map("job_titles")
 }
+
 model JobSearch {
   id              String           @id @default(uuid())
   startDate       DateTime         @map("start_date")
   user            User             @relation(fields: [userId], references: [id])
-  userId          String           @map("user_id") 
+  userId          String           @map("user_id")
   jobApplications JobApplication[]
   jobTitles       JobTitle[]       @relation("JobTitlesToJobSearches")
 
@@ -101,5 +101,3 @@ enum ApplicationStatus {
   submitted
   rejected
 }
-
-

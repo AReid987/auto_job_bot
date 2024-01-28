@@ -1,0 +1,1 @@
+/Users/Shared/DBngin/postgresql/15.1/bin/postgres "-D" "/Users/antonioreid/development/code/auto_job_app/postgresql" "-p" "5432"

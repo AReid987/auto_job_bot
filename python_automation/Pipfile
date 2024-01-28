@@ -25,6 +25,7 @@ pytesseract = "*"
 tqdm = "*"
 
 [dev-packages]
+appmap = "*"
 
 [requires]
 python_version = "3.10"

@@ -7,7 +7,7 @@ export class DatabaseInitService {
   private dbClient: Client;
   private readonly logger = new Logger(DatabaseInitService.name);
   private isConnected: boolean = false;
-  constructor(private configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     this.dbClient = new Client({
       host: this.configService.get<string>('POSTGRES_HOST'),
       port: parseInt(this.configService.get<string>('POSTGRES_PORT') || '5432'),

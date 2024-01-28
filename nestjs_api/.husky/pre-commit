@@ -1,6 +1,2 @@
-#!/usr/bin/env sh
-# shellcheck disable=SC1091
-. "$(dirname -- "$0")/_/husky.sh"
-
-cd nestjs_api || exit
+#!/usr/bin/env bash
 pnpm lint-staged

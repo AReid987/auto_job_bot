@@ -11,7 +11,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./postgresql/postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
@@ -40,7 +40,8 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - .:/nestjs_api:/usr/src/app
+      []
+      # - .:/nestjs_api:/usr/src/app
       # - ./nestjs_api/usr/src/app/node_modules:/usr/src/app/node_modules
     command: /bin/sh -c "dockerize -wait tcp://db:${POSTGRES_PORT} -timeout 30s && if [ \"$$TARGET_ENV\" = \"development\" ]; then pnpm run start:dev; else dumb-init node dist/main; fi"
 

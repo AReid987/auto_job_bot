@@ -1,52 +1,24 @@
-import { Module, OnApplicationBootstrap } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { Module } from '@nestjs/common';
+import { DevtoolsModule } from '@nestjs/devtools-integration';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DatabaseInitModule } from './database-init/database-init.module';
-import { DatabaseInitService } from './database-init/database-init.service'; // Import the service
-import { HealthModule } from './health/health.module';
-import { PrismaModule } from './prisma/prisma.module';
+import { NestConfigModule } from './config/config.module';
+import { PinoLoggerModule } from './logger/pino-logger/pino-logger.module';
 
 @Module({
   imports: [
-    LoggerModule.forRoot({
-      pinoHttp: {
-        level: 'trace', // Set level to 'trace'
-        customProps: () => ({
-          prettyPrint: true,
-          context: 'HTTP',
-        }),
-        transport: {
-          target: 'pino-pretty',
-          options: {
-            singleLine: true,
-            colorize: true,
-            translateTime: 'SYS:mm/dd/yyyy, h:MM:ss TT Z',
-            messageFormat:
-              '{level} - {context} - {msg} - {if url}{url: {url}{end}',
-          },
-        },
-      },
+    DevtoolsModule.register({
+      http: process.env.NODE_ENV !== 'production',
     }),
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '../.env',
-      expandVariables: true,
-    }),
-    DatabaseInitModule,
-    PrismaModule,
-    HealthModule,
+    LoggerModule.forRoot(),
+    NestConfigModule,
+    PinoLoggerModule,
+    // HealthModule,
+    // DatabaseInitModule,
+    // PrismaModule,
   ],
   controllers: [AppController],
-  providers: [AppService], // Add the service to providers
+  providers: [AppService],
 })
-export class AppModule implements OnApplicationBootstrap {
-  constructor(private databaseInitService: DatabaseInitService) {}
-
-  async onApplicationBootstrap() {
-    if (!this.databaseInitService.initializeConnection()) {
-      throw new Error('Failed to initialize database connection');
-    }
-  }
-}
+export class AppModule {}

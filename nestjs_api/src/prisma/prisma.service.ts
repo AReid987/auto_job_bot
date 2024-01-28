@@ -1,8 +1,12 @@
-import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  OnModuleDestroy,
+  OnModuleInit,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Prisma, PrismaClient } from '@prisma/client';
-import { PinoLogger, InjectPinoLogger } from 'nestjs-pino';
-import { DatabaseInitService } from '../database-init/database-init.service'; // Import DatabaseInitService
+// import { PinoLogger, InjectPinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class PrismaService
@@ -10,10 +14,11 @@ export class PrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor(
+    private readonly logger = new Logger(PrismaService.name),
     private configService: ConfigService,
-    @InjectPinoLogger(PrismaService.name)
-    private readonly logger: PinoLogger,
-    private databaseInitService: DatabaseInitService, // Inject DatabaseInitService
+    // @InjectPinoLogger(PrismaService.name)
+    // private readonly logger: PinoLogger,
+    // private databaseInitService: DatabaseInitService, // Inject DatabaseInitService
   ) {
     super({
       log: [
@@ -30,7 +35,7 @@ export class PrismaService
     });
   }
   async onModuleInit() {
-    this.logger.info(
+    this.logger.log(
       `Database URL: ${this.configService.get<string>('DATABASE_URL')}`,
     );
 
@@ -41,10 +46,10 @@ export class PrismaService
     }
 
     // await this.$connect();
-    // this.logger.info('Connected to DB');
+    // this.logger.log('Connected to DB');
 
     this.$on('info', (message) => {
-      this.logger.info('Prisma Info: ', message);
+      this.logger.log('Prisma log: ', message);
     });
     this.$on('warn', (message) => {
       this.logger.warn('Prisma Warning: ', message);
@@ -63,6 +68,6 @@ export class PrismaService
   }
   async onModuleDestroy() {
     await this.$disconnect();
-    this.logger.info('Disconnected from DB');
+    this.logger.log('Disconnected from DB');
   }
 }

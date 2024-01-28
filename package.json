@@ -1,0 +1,6 @@
+{
+	"devDependencies": {
+		"auto-husky": "^1.1.0",
+		"husky": "^9.0.6"
+	}
+}
