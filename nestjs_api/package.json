@@ -24,11 +24,11 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "eslint --caches --fix",
-      "prettier --write"
+      "pnpm lint",
+      "pnpm format"
     ],
     "*.{json,md}": [
-      "prettier --write"
+      "pnpm format"
     ]
   },
   "dependencies": {
