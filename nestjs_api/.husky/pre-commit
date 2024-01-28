@@ -1,2 +1,7 @@
-cd nestjs_api
-pnpm lint-staged
+#!/bin/sh
+if [ -d nestjs_api ]; then
+  cd nestjs_api && pnpm lint-staged
+else
+  echo "Directory 'nestjs_api' not found"
+  exit 1
+fi
