@@ -6,8 +6,8 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
-    abortOnError: false,
-    snapshot: true,
+    // abortOnError: false,
+    // snapshot: true,
   });
   const configService = app.get(ConfigService);
   const port = configService.get('PORT') || 3000;
