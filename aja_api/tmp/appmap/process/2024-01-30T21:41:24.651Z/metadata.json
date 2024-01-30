@@ -1,0 +1,18 @@
+{
+  "client": {
+    "name": "appmap-node",
+    "version": "2.14.2",
+    "url": "https://github.com/getappmap/appmap-node"
+  },
+  "language": {
+    "name": "javascript",
+    "engine": "Node.js",
+    "version": "v20.9.0"
+  },
+  "app": "aja_api",
+  "recorder": {
+    "type": "process",
+    "name": "process"
+  },
+  "name": "2024-01-30T21:41:24.651Z"
+}

@@ -1,0 +1,101 @@
+{
+  "events": [
+    {
+      "event": "call",
+      "id": 1,
+      "thread_id": 0,
+      "method_id": "bootstrap",
+      "static": true,
+      "defined_class": "main",
+      "path": "../../src/main.ts",
+      "lineno": 8
+    },
+    {
+      "event": "return",
+      "thread_id": 0,
+      "id": 2,
+      "parent_id": 1,
+      "return_value": {
+        "class": "Promise",
+        "value": "Promise { <pending> }",
+        "object_id": 1
+      },
+      "elapsed": 0.004970957990735769
+    },
+    {
+      "event": "call",
+      "id": 3,
+      "thread_id": 0,
+      "method_id": "constructor",
+      "static": true,
+      "parameters": [
+        {
+          "class": "AppService",
+          "value": "AppService {}",
+          "object_id": 2,
+          "name": "appService"
+        }
+      ],
+      "defined_class": "AppController",
+      "path": "../../src/app.controller.ts",
+      "lineno": 6
+    },
+    {
+      "event": "return",
+      "thread_id": 0,
+      "id": 4,
+      "parent_id": 3,
+      "elapsed": 0.000008875038474798203
+    }
+  ],
+  "version": "1.12",
+  "metadata": {
+    "client": {
+      "name": "appmap-node",
+      "version": "2.14.2",
+      "url": "https://github.com/getappmap/appmap-node"
+    },
+    "language": {
+      "name": "javascript",
+      "engine": "Node.js",
+      "version": "v20.9.0"
+    },
+    "app": "aja_api",
+    "recorder": {
+      "type": "process",
+      "name": "process"
+    },
+    "name": "2024-01-30T21:41:24.651Z"
+  },
+  "classMap": [
+    {
+      "type": "package",
+      "children": [
+        {
+          "type": "class",
+          "name": "AppController",
+          "children": [
+            {
+              "type": "function",
+              "name": "constructor",
+              "static": false,
+              "location": "../../src/app.controller.ts:6"
+            }
+          ]
+        },
+        {
+          "type": "class",
+          "name": "main",
+          "children": [
+            {
+              "type": "function",
+              "name": "bootstrap",
+              "static": true,
+              "location": "../../src/main.ts:8"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

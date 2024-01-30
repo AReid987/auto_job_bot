@@ -1,0 +1,156 @@
+{
+  "events": [
+    {
+      "event": "call",
+      "http_server_request": {
+        "path_info": "/",
+        "request_method": "GET",
+        "headers": {
+          "Host": "localhost:3000",
+          "Connection": "keep-alive",
+          "Cache-Control": "max-age=0",
+          "Sec-Ch-Ua": "\"Not A(Brand\";v=\"99\", \"Google Chrome\";v=\"121\", \"Chromium\";v=\"121\"",
+          "Sec-Ch-Ua-Mobile": "?0",
+          "Sec-Ch-Ua-Platform": "\"macOS\"",
+          "Dnt": "1",
+          "Upgrade-Insecure-Requests": "1",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+          "Sec-Fetch-Site": "none",
+          "Sec-Fetch-Mode": "navigate",
+          "Sec-Fetch-User": "?1",
+          "Sec-Fetch-Dest": "document",
+          "Accept-Encoding": "gzip, deflate, br",
+          "Accept-Language": "en-US,en;q=0.9",
+          "Cookie": "sb-auth-auth-token=%7B%22access_token%22%3A%22eyJhbGciOiJIUzI1NiIsImtpZCI6ImFjbmNoNjFtYU1LdklvYngiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzA1NzUxMDQ1LCJpYXQiOjE3MDU3MzY2NDUsImlzcyI6Imh0dHBzOi8vcnJveHV2c3JzZGJ4YWNva3ByYXUuc3VwYWJhc2UuY28vYXV0aC92MSIsInN1YiI6IjRhZDU2MDI2LWU0MjMtNDZmMS04MmFkLWNmNjhhYzQ2OTg5ZiIsImVtYWlsIjoicmVhZC5tdXNpa0BnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImdpdGh1YiIsInByb3ZpZGVycyI6WyJnaXRodWIiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vYXZhdGFycy5naXRodWJ1c2VyY29udGVudC5jb20vdS8yNjE3Nzg4ND92PTQiLCJlbWFpbCI6InJlYWQubXVzaWtAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZ1bGxfbmFtZSI6IkFudG9uaW8gUmVpZCIsImlzcyI6Imh0dHBzOi8vYXBpLmdpdGh1Yi5jb20iLCJuYW1lIjoiQW50b25pbyBSZWlkIiwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJBUmVpZDk4NyIsInByb3ZpZGVyX2lkIjoiMjYxNzc4ODQiLCJzdWIiOiIyNjE3Nzg4NCIsInVzZXJfbmFtZSI6IkFSZWlkOTg3In0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoib2F1dGgiLCJ0aW1lc3RhbXAiOjE3MDU3MzY2NDV9XSwic2Vzc2lvbl9pZCI6IjM3ZGY2ZTU4LWM0ZTQtNDExOS1iYzU0LWUzNmFiNGFkODg3ZCJ9.IJN9oeBsXDdA2C86tbAv7U--tC0nu6F4Rmq8LjXf1Ak%22%2C%22token_type%22%3A%22bearer%22%2C%22expires_in%22%3A14400%2C%22expires_at%22%3A1705751045%2C%22refresh_token%22%3A%22Tg_ZSxfQisdoVXRnvBa3tw%22%2C%22user%22%3A%7B%22id%22%3A%224ad56026-e423-46f1-82ad-cf68ac46989f%22%2C%22aud%22%3A%22authenticated%22%2C%22role%22%3A%22authenticated%22%2C%22email%22%3A%22read.musik%40gmail.com%22%2C%22email_confirmed_at%22%3A%222023-12-17T21%3A03%3A03.973732Z%22%2C%22phone%22%3A%22%22%2C%22confirmed_at%22%3A%222023-12-17T21%3A03%3A03.973732Z%22%2C%22last_sign_in_at%22%3A%222024-01-20T07%3A44%3A05.927486981Z%22%2C%22app_metadata%22%3A%7B%22provider%22%3A%22github%22%2C%22providers%22%3A%5B%22github%22%5D%7D%2C%22user_metadata%22%3A%7B%22avatar_url%22%3A%22https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F26177884%3Fv%3D4%22%2C%22email%22%3A%22read.musik%40gmail.com%22%2C%22email_verified%22%3Atrue%2C%22full_name%22%3A%22Antonio%20Reid%22%2C%22iss%22%3A%22https%3A%2F%2Fapi.github.com%22%2C%22name%22%3A%22Antonio%20Reid%22%2C%22phone_verified%22%3Afalse%2C%22preferred_username%22%3A%22AReid987%22%2C%22provider_id%22%3A%2226177884%22%2C%22sub%22%3A%2226177884%22%2C%22user_name%22%3A%22AReid987%22%7D%2C%22identities%22%3A%5B%7B%22identity_id%22%3A%224b608f1d-ab88-41b0-82e8-9db5e8522afa%22%2C%22id%22%3A%2226177884%22%2C%22user_id%22%3A%224ad56026-e423-46f1-82ad-cf68ac46989f%22%2C%22identity_data%22%3A%7B%22avatar_url%22%3A%22https%3A%2F%2Favatars.githubusercontent.com%2Fu%2F26177884%3Fv%3D4%22%2C%22email%22%3A%22read.musik%40gmail.com%22%2C%22email_verified%22%3Atrue%2C%22full_name%22%3A%22Antonio%20Reid%22%2C%22iss%22%3A%22https%3A%2F%2Fapi.github.com%22%2C%22name%22%3A%22Antonio%20Reid%22%2C%22phone_verified%22%3Afalse%2C%22preferred_username%22%3A%22AReid987%22%2C%22provider_id%22%3A%2226177884%22%2C%22sub%22%3A%2226177884%22%2C%22user_name%22%3A%22AReid987%22%7D%2C%22provider%22%3A%22github%22%2C%22last_sign_in_at%22%3A%222023-12-17T21%3A03%3A03.962454Z%22%2C%22created_at%22%3A%222023-12-17T21%3A03%3A03.962502Z%22%2C%22updated_at%22%3A%222024-01-20T07%3A44%3A05.505951Z%22%2C%22email%22%3A%22read.musik%40gmail.com%22%7D%5D%2C%22created_at%22%3A%222023-12-17T21%3A03%3A03.895623Z%22%2C%22updated_at%22%3A%222024-01-20T07%3A44%3A05.92934Z%22%7D%2C%22provider_token%22%3A%22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%22%7D"
+        },
+        "protocol": "HTTP/1.1"
+      },
+      "id": 1,
+      "thread_id": 0
+    },
+    {
+      "event": "call",
+      "id": 2,
+      "thread_id": 0,
+      "method_id": "getHello",
+      "static": false,
+      "receiver": {
+        "class": "AppController",
+        "value": "AppController { appService: AppService {} }",
+        "object_id": 3
+      },
+      "defined_class": "AppController",
+      "path": "../../src/app.controller.ts",
+      "lineno": 9
+    },
+    {
+      "event": "call",
+      "id": 3,
+      "thread_id": 0,
+      "method_id": "getHello",
+      "static": false,
+      "receiver": {
+        "class": "AppService",
+        "value": "AppService {}",
+        "object_id": 2
+      },
+      "defined_class": "AppService",
+      "path": "../../src/app.service.ts",
+      "lineno": 5
+    },
+    {
+      "event": "return",
+      "thread_id": 0,
+      "id": 4,
+      "parent_id": 3,
+      "return_value": {
+        "class": "String",
+        "value": "'Hello World!'"
+      },
+      "elapsed": 0.000014958437532186508
+    },
+    {
+      "event": "return",
+      "thread_id": 0,
+      "id": 5,
+      "parent_id": 2,
+      "return_value": {
+        "class": "String",
+        "value": "'Hello World!'"
+      },
+      "elapsed": 0.0004293331876397133
+    },
+    {
+      "event": "return",
+      "http_server_response": {
+        "status_code": 200,
+        "headers": {}
+      },
+      "id": 6,
+      "thread_id": 0,
+      "parent_id": 1,
+      "elapsed": 0.00909241707995534
+    }
+  ],
+  "version": "1.12",
+  "metadata": {
+    "client": {
+      "name": "appmap-node",
+      "version": "2.14.2",
+      "url": "https://github.com/getappmap/appmap-node"
+    },
+    "language": {
+      "name": "javascript",
+      "engine": "Node.js",
+      "version": "v20.9.0"
+    },
+    "app": "aja_api",
+    "recorder": {
+      "type": "requests",
+      "name": "requests"
+    },
+    "name": "GET / (200) — 2024-01-30T22:40:28.486Z"
+  },
+  "classMap": [
+    {
+      "type": "package",
+      "children": [
+        {
+          "type": "class",
+          "name": "AppController",
+          "children": [
+            {
+              "type": "function",
+              "name": "getHello",
+              "static": false,
+              "location": "../../src/app.controller.ts:9"
+            }
+          ]
+        },
+        {
+          "type": "class",
+          "name": "AppService",
+          "children": [
+            {
+              "type": "function",
+              "name": "getHello",
+              "static": false,
+              "location": "../../src/app.service.ts:5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "http",
+      "name": "HTTP server requests",
+      "children": [
+        {
+          "type": "route",
+          "name": "GET /"
+        }
+      ]
+    }
+  ]
+}

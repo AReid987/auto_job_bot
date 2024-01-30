@@ -1,0 +1,31 @@
+[
+  {
+    "type": "package",
+    "children": [
+      {
+        "type": "class",
+        "name": "AppController",
+        "children": [
+          {
+            "type": "function",
+            "name": "constructor",
+            "static": false,
+            "location": "../../src/app.controller.ts:6"
+          }
+        ]
+      },
+      {
+        "type": "class",
+        "name": "main",
+        "children": [
+          {
+            "type": "function",
+            "name": "bootstrap",
+            "static": true,
+            "location": "../../src/main.ts:8"
+          }
+        ]
+      }
+    ]
+  }
+]
