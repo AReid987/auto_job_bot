@@ -4,13 +4,14 @@ import chalk from 'chalk';
 
 @Injectable()
 export class NestLoggerService extends Logger {
-  private chalkInstance = chalk;
+  private chalkInstance;
 
   constructor(context: string, options: ConsoleLoggerOptions) {
     super(context, options);
+    this.chalkInstance = chalk;
   }
 
-  log(message: any, context?: string) {
-    super.log(this.chalkInstance.greenBright(message), context);
-  }
+  // log(message: any, context?: string) {
+  //   super.log(this.chalkInstance.greenBright(message), context);
+  // }
 }
