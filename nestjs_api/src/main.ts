@@ -1,23 +1,27 @@
-import { ConfigService } from '@nestjs/config';
 import { NestFactory, PartialGraphHost } from '@nestjs/core';
-import { writeFileSync } from 'fs'; // import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';import { PinoLoggerService } from './logger/pino-logger.service';
-import { Logger } from 'nestjs-pino';
+import { FlubErrorHandler } from 'nestjs-flub';
 import { AppModule } from './app.module';
+import { writeFileSync } from 'fs';
+import { ConfigService } from './config/config.service';
+import { NestLoggerService } from './logger/logger.service';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
-    // abortOnError: false,
-    // snapshot: true,
+    snapshot: true,
+    abortOnError: false,
   });
-  const configService = app.get(ConfigService);
-  const port = configService.get('PORT') || 3000;
-  const logger = app.get(Logger);
-  app.useLogger(logger);
-  await app.listen(port);
-  logger.log(`API is listening on: ${await app.getUrl()}`);
-}
 
+  const nestConfigService = app.get(ConfigService);
+  const port = nestConfigService.get('PORT');
+
+  const logger = app.get(NestLoggerService);
+  app.useLogger(logger);
+  app.useGlobalFilters(new FlubErrorHandler({ theme: 'dark', quote: true }));
+  await app.listen(port);
+  logger.log('App is running on port: ' + port);
+}
 bootstrap().catch(() => {
-  writeFileSync('graph.json', PartialGraphHost.toString() ?? '', 'utf-8');
+  writeFileSync('graph.json', PartialGraphHost.toString() ?? '');
   process.exit(1);
 });

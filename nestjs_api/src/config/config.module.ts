@@ -1,6 +1,17 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule as NestConfigModule } from '@nestjs/config';
+import { ConfigService } from './config.service';
+import { validate } from './env.validation';
+
 @Module({
-  imports: [ConfigModule.forRoot()],
+  imports: [
+    NestConfigModule.forRoot({
+      isGlobal: true,
+      validate,
+      envFilePath: '../../../.env',
+    }),
+  ],
+  providers: [ConfigService],
+  exports: [ConfigService],
 })
-export class NestConfigModule {}
+export class ConfigModule {}

@@ -51,3 +51,5 @@ scratchpad.md
 
 # PostgreSQL volume
 /postgres_data
+nestjs_api/package.json
+**/*$PNPM_HOME

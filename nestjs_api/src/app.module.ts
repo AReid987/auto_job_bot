@@ -1,24 +1,20 @@
+import { ConfigModule } from './config/config.module';
+import { LoggerModule } from 'nestjs-pretty-logger';
 import { Module } from '@nestjs/common';
 import { DevtoolsModule } from '@nestjs/devtools-integration';
-import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { NestConfigModule } from './config/config.module';
-import { PinoLoggerModule } from './logger/pino-logger/pino-logger.module';
+import { NestLoggerService } from './logger/logger.service';
 
 @Module({
   imports: [
     DevtoolsModule.register({
-      http: process.env.NODE_ENV !== 'production',
+      http: process.env['NODE_ENV'] !== 'production',
     }),
-    LoggerModule.forRoot(),
-    NestConfigModule,
-    PinoLoggerModule,
-    // HealthModule,
-    // DatabaseInitModule,
-    // PrismaModule,
+    LoggerModule,
+    ConfigModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, NestLoggerService],
 })
 export class AppModule {}
