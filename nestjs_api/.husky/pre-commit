@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+export PATH="/Users/antonioreid/.nvm/versions/node/v20.9.0/bin:$PATH"
+
 if [ -d nestjs_api ]; then
   cd nestjs_api && pnpm lint-staged
 else
