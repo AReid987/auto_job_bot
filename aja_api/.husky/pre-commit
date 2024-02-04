@@ -1,0 +1,2 @@
+cd aja_api
+pnpm test

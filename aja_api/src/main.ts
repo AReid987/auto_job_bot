@@ -1,14 +1,14 @@
-// import { Logger } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { FlubErrorHandler } from 'nestjs-flub';
+import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
 
-import { AutoLoggerService } from './auto_logger/auto_logger.service';
+import { AppModule } from './app.module.js';
+import { FlubErrorHandler } from 'nestjs-flub';
+import { NestFactory } from '@nestjs/core';
+
 // * SECTION -  This function initializes the Nest.js application.
 // * @param {NestFactory} NestFactory - The Nest factory class.
 // * ANCHOR -  @param {AppModule} AppModule - The root application module.
@@ -24,10 +24,9 @@ async function bootstrap() {
     { snapshot: true, bufferLogs: true },
   );
 
-  const logger = app.get(AutoLoggerService);
-  logger.setContext('Bootstrap');
+  app.useGlobalInterceptors(new LoggerErrorInterceptor());
+  const logger = app.get(Logger);
 
-  // const logger = app.get(Logger);
   app.useLogger(logger);
   const options = new DocumentBuilder()
     .setTitle('Auto Job App API')
@@ -45,6 +44,9 @@ async function bootstrap() {
 
   app.useGlobalFilters(new FlubErrorHandler({ theme: 'dark', quote: true }));
   await app.listen(3000, '0.0.0.0');
-  logger.log('App is running on http://localhost:3000');
+  logger.log(
+    `🚀 ${process.env.npm_package_name} is running on http://localhost:3000`,
+    'Bootstrap',
+  );
 }
 bootstrap();
