@@ -9,6 +9,8 @@ import { AppModule } from './app.module.js';
 import { FlubErrorHandler } from 'nestjs-flub';
 import { NestFactory } from '@nestjs/core';
 
+// import { doProgress } from './auto_logger/pino-option.logger';
+
 // * SECTION -  This function initializes the Nest.js application.
 // * @param {NestFactory} NestFactory - The Nest factory class.
 // * ANCHOR -  @param {AppModule} AppModule - The root application module.
@@ -49,4 +51,6 @@ async function bootstrap() {
     'Bootstrap',
   );
 }
+
+// doProgress();
 bootstrap();

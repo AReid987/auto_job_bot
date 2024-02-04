@@ -1,11 +1,63 @@
 import PinoPretty, { PrettyOptions } from 'pino-pretty';
+import Terminal, { Impl } from 'terminal-kit/Terminal';
 
 import { DateTime } from 'luxon';
 import { Params } from 'nestjs-pino';
 import ansis from 'ansis';
+import { createTerminal } from 'terminal-kit';
 import { randomUUID } from 'crypto';
 import { startTime } from 'pino-http';
 
+let term = createTerminal();
+
+// const termTable = (content) => {
+//   const table = term.table(
+//     [
+//       [
+//         content.row1Heading,
+//         content.row2Heading,
+//         content.row3Heading,
+//         content.row4Heading,
+//       ],
+//       [
+//         content.row1Content,
+//         content.row2Content,
+//         content.row3Content,
+//         content.row4Content,
+//       ],
+//     ],
+//     {
+//       hasBorder: true,
+//       contentHasMarkup: false,
+//       // borderChars: 'lightRounded',
+//       // borderAttr: { bgColor: 'blue' },
+//       // textAttr: { bgColor: 'default' },
+//       fit: true,
+//     },
+//   );
+//   return table;
+// };
+// let progressBar = term.progressBar({
+//   percent: true,
+//   title: 'Starting',
+//   eta: true,
+//   inline: true,
+// });
+// let progress = 0;
+
+// export const doProgress = () => {
+//   progress += Math.random() / 20;
+//   progressBar.update(progress);
+
+//   if (progress > 1) {
+//     setTimeout(() => {
+//       term('\n');
+//       process.exit();
+//     }, 200);
+//   } else {
+//     setTimeout(doProgress, 100 + Math.random() * 400);
+//   }
+// };
 const logSymTheme = {
   trace: ansis.bold.gray,
   debug: ansis.bold.cyan,
@@ -43,15 +95,30 @@ const pinoPrettyOptions: PrettyOptions = {
   messageFormat: (log, messageKey) => {
     const dateTime = prettifyTime(`${log.time}`).split('|');
 
-    const levelHeading = `📶 ${ansis.inverse(
-      `${logSymTheme[`${log.level}`]('LEVEL')}`,
-    )}`;
+    const levelHeading =
+      '📶' + ansis.inverse(`${logSymTheme[`${log.level}`]('LEVEL')}`);
     const date = dateTime[0] as string;
-    const contextName = ansis.red(`[${log.context}]` as string);
+    const contextName = ansis.red(`💻 [${log.context}]` as string);
     const pid = ansis.fg(98)(`🪪 ${ansis.gray('PID:')} (${log.pid})` as string);
     const level = prettifyLevel(`${log.level}`);
     const time = dateTime[1] as string;
-    const msg = `${ansis.bold.fg(27)(`${log[messageKey]}`)}` as string;
+    const msg = ansis.bold.fg(27)(`🔊 ${log[messageKey]}`) as string;
+    const duration = ansis.bold.fg(242)(`⏰  ${log.duration}ms` as string);
+    const tableContent = {
+      row1Heading: levelHeading,
+      row1Content: level,
+      row2Heading: date,
+      row2Content: time,
+      row3Heading: contextName,
+      row3Content: pid,
+      row4Heading: msg,
+      row4Content: duration,
+    };
+
+    // return '';
+    // return msg && contextName
+    //   ? '\n' + termTable(tableContent)
+    //   : '\n' + termTable(tableContent);
 
     return msg && contextName
       ? '\n' +
