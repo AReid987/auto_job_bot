@@ -1,13 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+
 @Injectable()
 export class AppService {
   private readonly logger = new Logger(AppService.name);
-  getHello(): string {
-    return 'Hello World!';
-  }
 
   getFavicon(): string {
+    this.logger.verbose({ message: 'redirect to getHello' });
     return 'favicon.ico';
+  }
+
+  getHello(): string {
+    this.logger.log({ message: 'Hello World!' });
+    return 'Hello World!';
   }
 }

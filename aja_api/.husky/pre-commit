@@ -1,2 +1,4 @@
-cd aja_api
-pnpm test
+#!/usr/bin/env sh
+export PATH="/Users/antonioreid/.nvm/versions/node/v20.9.0/bin:$PATH"
+cd aja_api || exit
+pnpm lint-staged
