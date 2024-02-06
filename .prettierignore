@@ -1,0 +1,8 @@
+# Folders
+coverage
+dist
+node_modules
+
+# Files
+pnpm-lock.yaml
+.npmrc

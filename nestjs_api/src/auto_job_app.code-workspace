@@ -1,10 +1,10 @@
 {
   "folders": [
-	{
-		"name": "auto_job_app",
-		"path": "../.."
-	}
-],
+    {
+      "name": "auto_job_app",
+      "path": "../..",
+    },
+  ],
   "settings": {
     "ColorfulMonorepo.workspaces.collection": [
       {
@@ -12,9 +12,9 @@
         "packageName": "auto_job_app",
         "label": "auto_job_app",
         "foreground": "#000000",
-        "background": "#bda674"
-      }
+        "background": "#bda674",
+      },
     ],
-    "pnpm-vscode-helper.extraWorkspaceScripts": []
-  }
+    "pnpm-vscode-helper.extraWorkspaceScripts": [],
+  },
 }

@@ -1,0 +1,26 @@
+{
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "embeddedLanguageFormatting": "auto",
+  "endOfLine": "auto",
+  "semi": true,
+  "tabWidth": 2,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "plugins": ["prettier-plugin-sh"],
+  "overrides": [
+    {
+      "files": "*.json",
+      "options": {
+        "singleQuote": false
+      }
+    },
+    {
+      "files": ".*rc",
+      "options": {
+        "singleQuote": false,
+        "parser": "json"
+      }
+    }
+  ]
+}
