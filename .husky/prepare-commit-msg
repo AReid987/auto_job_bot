@@ -1,1 +1,6 @@
-exec < /dev/tty && pnpm cz --hook || true
+#!/usr/bin/env bash
+. "$(dirname "$0")/_/husky.sh"
+
+echo '📓 📝 running prepare-commit-msg hook'
+if [ "$NO_VERIFY" ]; then exit 0; fi
+exec </dev/tty && node_modules/.bin/cz --hook || true
