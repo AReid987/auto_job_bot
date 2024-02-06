@@ -53,3 +53,8 @@ scratchpad.md
 /postgres_data
 nestjs_api/package.json
 **/*$PNPM_HOME
+
+.husky/
+commitlint.config.js
+# pnpm-lock.yaml
+# package.json

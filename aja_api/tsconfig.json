@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "@tsconfig/node20/tsconfig.json",
-    "@tsconfig/recommended/tsconfig.json"
-  ],
+  "extends": ["@tsconfig/recommended/tsconfig.json"],
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
