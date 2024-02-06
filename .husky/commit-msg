@@ -1,0 +1,2 @@
+echo '📓 📝 running commit-msg hook'
+npx --no -- commitlint --edit $1
