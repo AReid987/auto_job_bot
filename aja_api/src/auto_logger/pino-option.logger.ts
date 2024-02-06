@@ -1,10 +1,9 @@
-import type { Params } from 'nestjs-pino';
-import type { PrettyOptions } from 'pino-pretty';
-
 import ansis from 'ansis';
 import { randomUUID } from 'crypto';
 import { DateTime } from 'luxon';
+import type { Params } from 'nestjs-pino';
 import { startTime } from 'pino-http';
+import type { PrettyOptions } from 'pino-pretty';
 import PinoPretty from 'pino-pretty';
 
 // let term = createTerminal();
@@ -132,7 +131,7 @@ const pinoPrettyOptions: PrettyOptions = {
           '\n' +
           `${ansis.fg(242).dim(`${'-'.padStart(80, '-')}`)}` +
           '\n' +
-          `${level}   | ${time}  |  ${msg}` +
+          `${level}   | ${time}  |  ${msg}  |  ${duration}` +
           '\n\n' +
           `${ansis.fg(242)(`${'='.padStart(80, '=')}`)}`
       : '\n' +
@@ -140,7 +139,7 @@ const pinoPrettyOptions: PrettyOptions = {
           '\n' +
           `${ansis.fg(242).dim(`${'-'.padStart(80, '-')}`)}` +
           '\n' +
-          `${level}  |  ${time}  |  ${msg}` +
+          `${level}  |  ${time}  |  ${msg}  |  ${duration}` +
           '\n\n' +
           `${ansis.fg(242)(`${'='.padStart(80, '=')}`)}`;
   },
