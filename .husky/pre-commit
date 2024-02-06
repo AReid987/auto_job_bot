@@ -15,4 +15,4 @@ pnpm lint ||
 
 echo '🎉 No error found: committing this now.... ✨🚀🏄‍♂️🍻'
 
-npx lint-staged
+npx lint-staged && npx git-cz
