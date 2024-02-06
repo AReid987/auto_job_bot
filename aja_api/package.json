@@ -9,7 +9,6 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.{ts,sh}\" \"test/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "prepare": "cd .. && husky aja_api/.husky",
     "prettier-watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
     "start": "nest start",
     "start:debug": "nest start --debug --watch",
