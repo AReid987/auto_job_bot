@@ -1,6 +1,5 @@
 {
   "./**/*.{ts,tsx,js,jsx}": "eslint --fix",
-  "./**/*.{ts,tsx,js,json,*rc}": "prettier --write",
-  "package.json": "syncpack format",
-  "*": "git add"
+  "./**/*.{ts,tsx,js,json,md,*rc}": "prettier --write",
+  "package.json": ["syncpack format", "sort-package-json"]
 }

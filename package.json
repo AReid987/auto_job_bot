@@ -1,8 +1,14 @@
 {
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-emoji-conventional"
-    }
+  "scripts": {
+    "eslint:check": "eslint \"./**/*.{ts,tsx,js,jsx}\"",
+    "eslint:fix": "pnpm eslint:check -- --fix",
+    "lint": "pnpm eslint:check && pnpm prettier:check",
+    "prepare": "husky",
+    "prepush": "pnpm test",
+    "prettier:check": "prettier --check \"*{ts,tsx,js,json,*rc}\"",
+    "prettier:write": "prettier --write \"*{ts,tsx,js,json,*rc}\"",
+    "syncpack": "syncpack",
+    "test": "jest"
   },
   "dependencies": {
     "depcheck": "^1.4.7",
@@ -30,17 +36,5 @@
     "prettier": "^3.2.5",
     "pretty-quick": "^4.0.0",
     "typescript": "*"
-  },
-  "scripts": {
-    "eslint:check": "eslint \"./**/*.{ts,tsx,js,jsx}\"",
-    "eslint:fix": "pnpm eslint:check -- --fix",
-    "lint": "pnpm eslint:check && pnpm prettier:check",
-    "precommit": "lint-staged && pnpm lint",
-    "prepare": "husky",
-    "prepush": "pnpm test",
-    "prettier:check": "prettier --check \"*{ts,tsx,js,json,*rc}\"",
-    "prettier:write": "prettier --write \"*{ts,tsx,js,json,*rc}\"",
-    "syncpack": "syncpack",
-    "test": "jest"
   }
 }
