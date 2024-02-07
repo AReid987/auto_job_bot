@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "commit": "cz",
     "eslint:check": "eslint \"./**/*.{ts,tsx,js,jsx}\"",
     "eslint:fix": "pnpm eslint:check -- --fix",
     "lint": "pnpm eslint:check && pnpm prettier:check",
@@ -8,6 +9,11 @@
     "prettier:write": "prettier --write \"*{ts,tsx,js,json,*rc}\"",
     "syncpack": "syncpack",
     "test": "jest"
+  },
+  "lint-staged": {
+    "*.@(ts|tsx)": "bash -c 'tsc --skipLibCheck --noEmit'",
+    "*.@(ts|tsx|js|jsx)": "eslint --fix",
+    "*.@(ts|tsx|js|jsx|json|jsonc|json5|md|mdx|yaml|yml)": "prettier --write"
   },
   "config": {
     "commitizen": {
@@ -27,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
+    "cz-emoji-conventional": "^1.0.2",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-standard-with-typescript": "^43.0.1",

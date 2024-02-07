@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-. "$(dirname "$0")/_/husky.sh"
+if sh -c ": >/dev/tty" >/dev/null 2>/dev/null; then exec >/dev/tty 2>&1; fi
 
 echo '🏗️👷 Styling your project before committing👷‍♂️🏗️'
 
@@ -7,12 +6,12 @@ echo 'please be patient, this may take a while...'
 
 # Check ESLint Standards
 pnpm lint ||
-(
-    echo '🔨❌ Yoo, you have a problem in your code. Check linter 🔨❌
-          Run yarn lint, add changes and try commit again.';
-    false;
-)
+    (
+        echo '🔨❌ Yoo, you have a problem in your code. Check linter 🔨❌
+        Run yarn lint, add changes and try commit again.'
+        false
+    )
 
 echo '🎉 No error found: committing this now.... ✨🚀🏄‍♂️🍻'
 
-npx lint-staged && npx git-cz
+pnpm lint-staged
