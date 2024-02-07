@@ -1,6 +1,6 @@
 # Set specific Versions for Node and pnpm
 ARG NODE_VERSION=20.9.0-alpine3.18
-ARG PNPM_VERSION=8.10.5
+ARG PNPM_VERSION=8.14.22
 
 # Base stage with Node.js
 ################################################################################
